@@ -33,6 +33,7 @@
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="/admin/psdm">PSDM</a></li>
                     <li class="nav-item"> <a class="nav-link" href="/admin/kwu">KWU</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="/admin/minatbakat">Minat & Bakat</a></li>
                 </ul>
             </div>
         </li>

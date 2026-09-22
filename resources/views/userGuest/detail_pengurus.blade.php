@@ -79,6 +79,7 @@
                             <li><a href="#kemuslimahan">Kemuslimahan</a></li>
                             <li><a href="#psdm">PSDM</a></li>
                             <li><a href="#kewirausahaan">KWU</a></li>
+                            <li><a href="#minatbakat">Minat & Bakat</a></li>
                         </ul>
                     </li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
@@ -177,7 +178,7 @@
                     <h2>Departement Kemuslimahan</h2>
                 </div>
                 <div class="row">
-                    @foreach ($kemu as $km)
+                    @foreach ($kemuslimahan as $km)
                         <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
                             <div class="member d-flex align-items-start">
                                 <div class=""><img src="{{ url('storage/' . $km->foto) }}"
@@ -271,18 +272,58 @@
                                     <span style="font-style: italic; color: #7f8c8d;">
                                     {{ $kw->departement }}
                                     </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
+                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
                                      <strong>Angkatan:</strong> {{ $kw->angkatan }}
                                     </p>
-                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
+                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
                                      <strong>Prodi:</strong> {{ $kw->prodi }}
                                     </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i> 
-                                            <strong>Tanggal Lahir:</strong> {{ $kw->tanggal_lahir ? \Carbon\Carbon::parse($kw->tanggal_lahir)->translatedFormat('d F Y') : '-' }} 
+                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i>
+                                            <strong>Tanggal Lahir:</strong> {{ $kw->tanggal_lahir ? \Carbon\Carbon::parse($kw->tanggal_lahir)->translatedFormat('d F Y') : '-' }}
                                         </p>
                                     <div class="motto-grid">
                                         <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
                                         <span><em>"{{ $kw->moto }}"</em></span>
+                                        </div>
+                                    <div class="social">
+                                        {{-- Tambahkan link jika ada --}}
+                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="section-title mt-5" id="minatbakat">
+                    <h2>Departement Minat & Bakat</h2>
+                </div>
+                <div class="row">
+                    @foreach ($minatbakat as $mb)
+                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
+                            <div class="member d-flex align-items-start">
+                                <div class=""><img src="{{ url('storage/' . $mb->foto) }}"
+                                        {{-- class="img-fluid" --}} alt=""
+                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
+                                </div>
+                                <div class="member-info">
+                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
+                                   {{ $mb->nama }}
+                                    </h4>
+                                    <span style="font-style: italic; color: #7f8c8d;">
+                                    {{ $mb->departement }}
+                                    </span>
+                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
+                                     <strong>Angkatan:</strong> {{ $mb->angkatan }}
+                                    </p>
+                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
+                                     <strong>Prodi:</strong> {{ $mb->prodi }}
+                                    </p>
+                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i>
+                                            <strong>Tanggal Lahir:</strong> {{ $mb->tanggal_lahir ? \Carbon\Carbon::parse($mb->tanggal_lahir)->translatedFormat('d F Y') : '-' }}
+                                        </p>
+                                    <div class="motto-grid">
+                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
+                                        <span><em>"{{ $mb->moto }}"</em></span>
                                         </div>
                                     <div class="social">
                                         {{-- Tambahkan link jika ada --}}

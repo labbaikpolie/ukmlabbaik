@@ -14,6 +14,7 @@ use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BphController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\DetailPengurusController;
+use App\Http\Controllers\MinatBakatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ Route::get('/rapat',  [LandingPageController::class, 'rapat']);
 Route::get('/detail-anggota',  [LandingPageController::class, 'detail_anggota']);
 
 // Route::get('/cek', [LandingPageController::class, 'index']);
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->group(function () {
     // Route::get('/', [dashboardController::class, 'index']);
     // blog
     Route::get('/', [blogController::class, 'index']);
@@ -53,7 +54,7 @@ Route::prefix('admin')->group(function () {
     Route::delete('/bph/{id}', [BphController::class, 'destroy']);
 
     Route::get('/kominfo', [KominfoController::class, 'index']);
-    ROute::post('/saveKominfo', [KominfoController::class, 'store']);
+    Route::post('/saveKominfo', [KominfoController::class, 'store']);
     Route::put('/kominfo/{id}', [KominfoController::class, 'update']);
     Route::delete('/kominfo/{id}', [KominfoController::class, 'destroy']);
 
@@ -84,13 +85,15 @@ Route::prefix('admin')->group(function () {
     Route::post('/saveKwu', [KwuController::class, 'store']);
     Route::put('/kwu/{id}', [KwuController::class, 'update']);
     Route::delete('/kwu/{id}', [KwuController::class, 'destroy']);
+
+    // departement
+    // minatbakat
+    Route::get('/minatbakat', [MinatBakatController::class, 'index']);
+    Route::post('/saveMinatBakat', [MinatBakatController::class, 'store']);
+    Route::put('/minatbakat/{id}', [MinatBakatController::class, 'update']);
+    Route::delete('/minatbakat/{id}', [MinatBakatController::class, 'destroy']);
 });
 
-    //blog
-    Route::get('/', [ArtikelController::class, 'index']);
-   
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Route::get('/detail-anggota', [DetailPengurusController::class, 'detailPengurus']);
