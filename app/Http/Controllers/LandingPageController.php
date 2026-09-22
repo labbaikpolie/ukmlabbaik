@@ -10,6 +10,7 @@ use App\Models\kwu;
 use App\Models\psdm;
 use App\Models\Rapat;
 use App\Models\Syiar;
+use App\Models\MinatBakat;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
@@ -19,16 +20,13 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $data = Blog::latest()->paginate(3);
+        $artikel = Blog::latest()->get(); // Get all articles for the artikels section
         $rapats = Rapat::latest()->paginate(3);
-        // dd($data);
-        $bph = Bph::all(); 
+        $bph = Bph::all();
         $bphAkhir = collect();
-    
-        return view('userGuest.index', compact('bph', 'bphAkhir')); // pastikan nama view sesuai
+        $data = Blog::latest()->paginate(3); // Keep this if needed elsewhere, though not used in view
 
-        $artikel = Blog::latest()->get();
-        return view('userGuest.index', compact('artikel'));
+        return view('userGuest.index', compact('artikel', 'rapats', 'bph', 'bphAkhir', 'data'));
     }
 
     /**
@@ -44,9 +42,10 @@ class LandingPageController extends Controller
         $kemuslimahan = Kemuslimahan::where('angkatan', '2024')->get();
         $psdm = psdm::where('angkatan', '2024')->get();
         $kwu = kwu::where('angkatan', '2024')->get();
+        $minatbakat = MinatBakat::all();
         return view('userGuest.detail_pengurus', [
             'kominfo' => $kominfo, 'syiar' => $syiar, 'syiarr' => $syiarr,
-            'kemuslimahan' => $kemuslimahan, 'psdm' => $psdm, 'kwu' => $kwu
+            'kemuslimahan' => $kemuslimahan, 'psdm' => $psdm, 'kwu' => $kwu, 'minatbakat' => $minatbakat
         ]);
     }
 
