@@ -182,6 +182,9 @@
                     @endforeach
                 </div>
             @endif
+            <div class="post-list-link">
+                <a class="btn-outline" href="{{ route('artikel.index') }}">Lihat semua artikel</a>
+            </div>
         </div>
     </section>
 
@@ -236,6 +239,9 @@
                     @endforeach
                 </div>
             @endif
+            <div class="post-list-link">
+                <a class="btn-outline" href="{{ route('rapat.index') }}">Lihat semua rapat</a>
+            </div>
         </div>
     </section>
 

@@ -32,7 +32,7 @@
             <i class="mdi mdi-library-plus"></i>
             tambah anggota bph baru</button>
     </div>
-    <div class="table mt-2 p-3 table-responsive">
+    <div class="mt-2 p-3 table-responsive">
         <table class="table table-bordered table-striped" id="table-blog">
             <thead>
                 <tr>
@@ -79,18 +79,16 @@
                     <!-- edit Modal -->
                     <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true" data-bs-backdrop="static">
-                        <div class="modal-dialog bg-white">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="mdi mdi-table-edit"></i>
-                                        Edit
-                                        Data Bph</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit BPH</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form action="/admin/bph/{{ $item->id }}" method="post"
-                                        enctype="multipart/form-data">
+                                        enctype="multipart/form-data" class="admin-edit-form admin-edit-people-form">
                                         @csrf
                                         @method('PUT')
                                         <div class="mb-3">
@@ -178,8 +176,8 @@
 {{-- modal add new blog --}}
 <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     data-bs-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content" style="background-color: white">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content admin-form-modal">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="mdi mdi-library-plus"></i> Tambah Blog
                     Baru
@@ -187,7 +185,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/admin/saveBph" method="post" enctype="multipart/form-data">
+                <form action="/admin/saveBph" method="post" enctype="multipart/form-data"
+                    class="admin-edit-form admin-edit-people-form">
                     @csrf
                     <div class="mb-3">
                         <label for="nama" class="mb-1">Nama</label>
