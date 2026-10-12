@@ -30,23 +30,21 @@ class LandingPageController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Halaman struktur pengurus (BPH + departemen).
      */
     public function detail_anggota()
     {
-        // $rapats = Rapat::latest()->paginate(3);
-        // dd($rapats);
+        $bph = Bph::all();
         $kominfo = Kominfo::where('angkatan', '2024')->get();
-        $syiar = Syiar::where('angkatan', '2024')->paginate(2);
-        $syiarr = Syiar::where('id', 4)->where('angkatan', '2024')->get();
+        $syiar = Syiar::where('angkatan', '2024')->get();
         $kemuslimahan = Kemuslimahan::where('angkatan', '2024')->get();
         $psdm = psdm::where('angkatan', '2024')->get();
         $kwu = kwu::where('angkatan', '2024')->get();
         $minatbakat = MinatBakat::all();
-        return view('userGuest.detail_pengurus', [
-            'kominfo' => $kominfo, 'syiar' => $syiar, 'syiarr' => $syiarr,
-            'kemuslimahan' => $kemuslimahan, 'psdm' => $psdm, 'kwu' => $kwu, 'minatbakat' => $minatbakat
-        ]);
+
+        return view('userGuest.detail_pengurus', compact(
+            'bph', 'kominfo', 'syiar', 'kemuslimahan', 'psdm', 'kwu', 'minatbakat'
+        ));
     }
 
     /**

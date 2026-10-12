@@ -1,708 +1,547 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>UKM LABBAIK</title>
-    <link rel="shortcut icon" href="{{ asset('/assets/images/Logo Labbaik.png') }}">
-    <!-- Favicons -->
-    <link href="{{ asset('/user/assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('/users/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
+    <link rel="shortcut icon" href="{{ asset('assets/images/Logo Labbaik.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
-
-    <!-- Vendor CSS Files -->
-    <link href="{{ asset('/users/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('/users/assets/css/style.css') }}" rel="stylesheet">
-    <!-- =======================================================
-  * Template Name: Arsha
-  * Updated: Sep 18 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-    <style>
-        .more {
-            margin-right: -10px !important;
-        }
-
-        .btn-outline-info {
-            color: #47b2e4;
-            /* warna teks awalnya (biru) */
-            background-color: transparent;
-            /* latar belakang awalnya (transparan untuk outline) */
-            transition: color 0.3s, background-color 0.3s;
-            /* animasi perubahan warna */
-        }
-
-        .btn-outline-info:hover {
-            color: #fff;
-            /* warna teks saat di-hover (putih) */
-            background-color: #47b2e4;
-            /* latar belakang saat di-hover (biru) */
-        }
-
-        .deskripsi {
-            max-width: 0px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .modal-dialog {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .modal-content {
-            width: 100%;
-            max-width: 600px;
-            /* Sesuaikan lebar modal sesuai kebutuhan */
-        }
-
-        .motto-grid {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 5px;
-            line-height: 1.6;
-            color: #555;
-            margin-top: 5px;
-            font-style: italic;
-            }
-
-            .motto-grid strong {
-            font-style: normal;
-            }
-
-            .motto-grid i {
-            color: #3498db;
-            }
-
-        section#rapat {
-            margin-top: -90px !important;
-        }
-
-        .modal-content {
-            margin-top: 700px !important;
-        }
-    </style>
+    <link href="{{ asset('assets/css/landing.css') }}" rel="stylesheet">
 </head>
 
 <body>
+    @php
+        $tgl = fn($d) => $d ? \Carbon\Carbon::parse($d)->translatedFormat('d F Y') : '-';
+    @endphp
 
-    <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top ">
-        <div class="container d-flex align-items-center">
-            <h1 class="logo me-auto logo-labbaik" style="color: white; font-weight: bold;">UKM Labbaik
-            </h1>
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                    <li><a class="nav-link scrollto" href="#about">About</a></li>
-                    {{-- <li><a class="nav-link scrollto" href="#team">Team</a></li> --}}
-                    <li><a class="nav-link scrollto" href="#services">Visi Misi</a></li>
-                    <li><a class="nav-link scrollto" href="#artikel">Artikel</a></li>
-                    <li><a class="nav-link scrollto" href="/detail-anggota">Departemen</a></li>
-                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
+    <header>
+        <nav class="wrap">
+            <div class="logo"><span class="logo-dot"></span> UKM LABBAIK</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#visimisi">Visi Misi</a>
+                <a href="#artikel">Artikel</a>
+                <a href="#rapat">Rapat</a>
+                <a href="#departemen">Departemen</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka menu" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </nav>
+    </header>
 
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+            <span class="diag d1"></span><span class="diag d2"></span><span class="diag d3"></span>
+            <span class="dot dt1"></span><span class="dot dt2"></span><span class="dot dt3"></span>
+            <span class="ring-loop"></span>
         </div>
-    </header><!-- End Header -->
-
-    <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex align-items-center">
-
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1"
-                    data-aos="fade-up" data-aos-delay="200">
-                    <h1>Salam labbaik !!!</h1>
-                    <h2>Bersama labbaik ayo lebih baik...</h2>
-                    <div class="d-flex justify-content-center ">
-                        <a href="https://youtu.be/Wk1Hg7Ehj_A?si=SsY4yU5wLn3plPqo" class="glightbox btn-watch-video"><i
-                                class="bi bi-play-circle"></i><span>Watch Video</span></a>
-                    </div>
+        <div class="wrap hero-grid">
+            <div>
+                <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor" class="star-ic">
+                        <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8Z" />
+                    </svg> Politeknik Negeri Jember</span>
+                <h1>Salam <span class="c-grad">labbaik</span> !!!</h1>
+                <p>Bersama labbaik ayo lebih baik…</p>
+                <div class="hero-cta">
+                    <a class="btn-primary"
+                        href="https://docs.google.com/forms/d/e/1FAIpQLSfqWWKRvqOBuoQCYflGAiOdH4jrBDnp6afHF8gp2LuyF755sw/viewform"
+                        target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4 4-6 8-6s8 2 8 6" />
+                        </svg>
+                        Join Labbaik
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M13 6l6 6-6 6" />
+                        </svg>
+                    </a>
+                    <a class="play-link" href="https://youtu.be/Eu6Jm0Pqjjg?si=YzVriXR46g_wsGZQ" target="_blank"
+                        rel="noopener"><span class="play-circle">&#9654;</span> Watch Video</a>
                 </div>
-                <div class=" col-lg-6 order-1 order-lg-2" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="{{ asset('assets/images/Logo Labbaik.png') }}" class="img-fluid animated" alt="Logo Labbaik" width="250">
-                        <alt="" width="250">
+            </div>
+            <div class="hero-art">
+                <div class="logo-glow"></div>
+                <img class="logo-img" src="{{ asset('assets/images/Logo Labbaik.png') }}" alt="Logo UKM LABBAIK">
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>About Us</h2>
+                <div class="underline-bar"></div>
+                <p>UKM labbaik merupakan Lembaga Dakwah Kampus atau Unit Kerohanian Islam yang menjadi satu-satunya UKM
+                    Kerohanian Islam di Kampus Politeknik Negeri Jember. UKM labbaik lahir atas sebuah keinginan yang
+                    mulia. Sebuah niat untuk membentuk ladang aktualisasi keislaman. Banyak manfaat yang dapat kita
+                    ambil jika bergabung dengan ukm labbaik diantaranya :</p>
+            </div>
+            <ul class="about-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg> Menambah wawasan keislaman</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg> Menambah saudara seiman</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg> Softskill dan hardskill semakin terlatih</li>
+            </ul>
+            <div class="center"><a class="btn-outline"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfqWWKRvqOBuoQCYflGAiOdH4jrBDnp6afHF8gp2LuyF755sw/viewform"
+                    target="_blank" rel="noopener noreferrer">Join Labbaik yuk!</a></div>
+        </div>
+    </section>
+
+    <section class="section" id="visimisi">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>Visi dan Misi</h2>
+                <div class="underline-bar"></div>
+                <p>Menjadikan UKM labbaik sebagai wadah bagi mahasiswa guna memperdalam ilmu agama dan juga mencetak
+                    mahasiswa yang berakhlak mulia, jujur, serta bertanggung jawab yang diridhoi oleh Allah subhanahu
+                    wata'ala.</p>
+            </div>
+            <div class="visi-grid">
+                <div class="visi-card">
+                    <h3>Berjiwa Qurani</h3>
+                    <p>Menciptakan mahasiswa yang berjiwa qurani.</p>
+                </div>
+                <div class="visi-card">
+                    <h3>Berakhlak Al-Qur'an dan as-Sunnah</h3>
+                    <p>Menciptakan mahasiswa yang senantiasa berakhlak Al-Qur'an dan as-Sunnah.</p>
+                </div>
+                <div class="visi-card">
+                    <h3>Menjunjung tinggi nilai-nilai ketakwaan</h3>
+                    <p>Mahasiswa mampu menjunjung tinggi nilai-nilai ketakwaan dan bernafaskan Islam.</p>
                 </div>
             </div>
         </div>
-    </section><!-- End Hero -->
+    </section>
 
-    <main id="main">
-        <!-- ======= About Us Section ======= -->
-        <section id="about" class="about">
-            <div class="container" data-aos="fade-up">
-                <div class="section-title">
-                    <h2>About Us</h2>
-                </div>
-                <div class="row content">
-                    <div class="col-lg-12">
-                        <p>
-                            UKM labbaik merupakan Lembaga Dakwah Kampus atau Unit Kerohanian Islam yang menjadi
-                            satu-satunya UKM Kerohanian Islam di Kampus Politeknik Negeri Jember. UKM labbaik lahir atas
-                            sebuah keinginan yang mulia. Sebuah niat untuk membentuk ladang aktualisasi keislaman.
-                            Banyak manfaat yang dapat kita ambil jika bergabung dengan ukm labbaik diantaranya :
-                        </p>
-
-                        <ul>
-                            <li><i class="ri-check-double-line"></i>Menambah wawasan keislaman</li>
-                            <li><i class="ri-check-double-line"></i>Menambah saudara seiman</li>
-                            <li><i class="ri-check-double-line"></i>Softskill dan hardskill semakin terlatih </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="section-title content">
-                    <a href="#"
-                        class="btn-learn-more col-lg-3 justify-content-end align-content-end align-items-end">Join
-                        Labbaik yuk!</a>
-                </div>
+    {{-- ===== ARTIKEL (dinamis dari tabel blogs) ===== --}}
+    <section class="section" id="artikel">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>Artikel</h2>
+                <div class="underline-bar"></div>
+                <p>Artikel terbaru dari LABBAIK.</p>
             </div>
-        </section><!-- End About Us Section -->
-        <!-- ======= Services Section ======= -->
-        <section id="services" class="services section-bg">
-            <div class="container" data-aos="fade-up">
 
-                <div class="section-title">
-                    <h2>Visi dan Misi</h2>
-                    <p>Menjadikan UKM labbaik sebagai wadah bagi mahasiswa guna memperdalam ilmu agama dan juga mencetak
-                        mahasiswa yang berakhlak mulia, jujur, serta bertanggung jawab yang diridhoi oleh Allah
-                        subhanahu wata'ala
-                    </p>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-lg-4 col-md-4 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
-                        data-aos-delay="100">
-                        <div class="icon-box">
-                            {{-- <div class="icon"><i class="bx bxl-dribbble"></i></div> --}}
-                            <h4><a href="">Berjiwa Qurani</a></h4>
-                            <p>Menciptakan mahasiswa yang berjiwa qurani
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in"
-                        data-aos-delay="200">
-                        <div class="icon-box">
-                            {{-- <div class="icon"><i class="bx bx-file"></i></div> --}}
-                            <h4><a href="">Berakhlak Al-Qur'an dan as <br>Sunnah</a></h4>
-                            <p>Menciptakan mahasiswa yang senantiasa <br> berakhlak Al-Qur'an dan as-Sunnah</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-4 d-flex align-items-stretch mt-4 mt-xl-0" data-aos="zoom-in"
-                        data-aos-delay="300">
-                        <div class="icon-box">
-                            {{-- <div class="icon"><i class="bx bx-tachometer"></i></div> --}}
-                            <h4><a href="">Menjunjung tinggi nilai-<br>nilai ketakwaan</a></h4>
-                            <p>Mahasiswa mampu menjunjung tinggi nilai-nilai ketakwaan dan bernafaskan Islam</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section><!-- End Services Section -->
-        <!-- ======= Team Section ======= -->
-        <section id="artikel" class="team section-bg" style="padding-top:5rem; background:white;">
-            <div class="container" data-aos="fade-up">
-                <div class="section-title">
-                    <h2>Artikel</h2>
-                </div>
-                <div class="row">
+            @if ($artikel->isEmpty())
+                <p class="empty-note">Belum ada artikel.</p>
+            @else
+                <div class="card-grid">
                     @foreach ($artikel as $item)
-                        <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <a href="#" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop{{ $item->id }}">
-                                    <div class="card border-0" style="width: 18rem;">
-                                        <img src="{{ url('storage/' . $item->foto) }}" alt="gambar"
-                                            class="img-fluid" style="height: 150px !important; object-fit: cover;">
-                                        <div class="card-body">
-                                            <h4 class="text-center">{{ $item->judul }}</h4>
-                                        </div>
-                                    </div>
-
-                                </a>
-
+                        <button type="button" class="post-card" data-dialog="artikel-{{ $item->id }}">
+                            <div class="post-thumb">
+                                @if ($item->foto)
+                                    <img src="{{ url('storage/' . $item->foto) }}" alt="{{ $item->judul }}"
+                                        loading="lazy">
+                                @endif
                             </div>
-                        </div>
-
-                        <div class="modal fade" id="staticBackdrop{{ $item->id }}" data-bs-backdrop="static"
-                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog ">
-                                <div class="modal-content mt-5">
-                                    <div class="modal-header">
-                                        <p class="modal-title" id="exampleModalLabel">
-                                            <b> Post : </b> {{ \Carbon\Carbon::parse($item->tanggal_post)->translatedFormat('d F Y') }}
-                                        </p>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <div class="container p-2">
-                                            {{-- <div class="d-flex justify-content-center">
-                                                <div class="col-10 justify-content-center"> --}}
-                                            <div class="card" style="width: 24rem; margin: 0 auto;">
-                                                {{-- <img src="images/card.png" class="card-img-top" alt="..."> --}}
-                                                <img src="{{ url('storage/' . $item->foto) }}" alt="gambar"
-                                                    class="card-img-top"
-                                                    style="height: 195px !important; object-fit: cover;">
-                                                <div class="card-body">
-                                                    <h4 class="text-center">{{ $item->judul }}
-                                                    </h4>
-                                                    <p style="text-align: justify;">{{ $item->description }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            {{-- </div>
-                                            </div> --}}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="post-body">
+                                <div class="post-meta">{{ $tgl($item->tanggal_post) }}</div>
+                                <h3>{{ $item->judul }}</h3>
+                                <p>{{ \Illuminate\Support\Str::limit($item->description, 90) }}</p>
                             </div>
-                        </div>
+                        </button>
+
+                        <dialog class="dlg" id="artikel-{{ $item->id }}">
+                            <div class="dlg-head">
+                                <span>Post: {{ $tgl($item->tanggal_post) }}</span>
+                                <button type="button" class="dlg-close" data-close
+                                    aria-label="Tutup">&times;</button>
+                            </div>
+                            @if ($item->foto)
+                                <img class="dlg-img" src="{{ url('storage/' . $item->foto) }}"
+                                    alt="{{ $item->judul }}" loading="lazy">
+                            @endif
+                            <div class="dlg-body">
+                                <h3>{{ $item->judul }}</h3>
+                                <p>{{ $item->description }}</p>
+                            </div>
+                        </dialog>
                     @endforeach
                 </div>
+            @endif
+        </div>
+    </section>
 
+    {{-- ===== RAPAT (dinamis dari tabel rapats) ===== --}}
+    <section class="section" id="rapat">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>Rapat</h2>
+                <div class="underline-bar"></div>
+                <p>Jadwal dan dokumentasi rapat pengurus.</p>
             </div>
-        </section>
-        <!-- End Team Section -->
-        <section id="rapat" class="team section-bg mb-0 mt-0" style="padding-top:5rem; background : white">
-            <div class="container" data-aos="fade-up">
-                <div class="section-title">
-                    <h2>Rapat</h2>
-                </div>
-                <div class="row">
+
+            @if ($rapats->isEmpty())
+                <p class="empty-note">Belum ada data rapat.</p>
+            @else
+                <div class="card-grid">
                     @foreach ($rapats as $rapat)
-                        <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <a href="#" data-bs-toggle="modal"
-                                    data-bs-target="#rapatmodal{{ $rapat->id }}">
-                                    <div class="card border-0" style="width: 18rem;">
-                                        <img src="{{ url('storage/' . $rapat->foto) }}" alt="gambar"
-                                            class="img-fluid" style="height: 150px !important; object-fit: cover;">
-                                        <div class="card-body">
-                                            <h4 class="text-center">{{ $rapat->agenda_rapat }}</h4>
-                                        </div>
-                                    </div>
-
-                                </a>
-
+                        <button type="button" class="post-card" data-dialog="rapat-{{ $rapat->id }}">
+                            <div class="post-thumb">
+                                @if ($rapat->foto)
+                                    <img src="{{ url('storage/' . $rapat->foto) }}" alt="{{ $rapat->agenda_rapat }}"
+                                        loading="lazy">
+                                @endif
                             </div>
-                        </div>
-
-                        <div class="modal fade" id="rapatmodal{{ $rapat->id }}" data-bs-backdrop="static"
-                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content mt-5">
-                                    <div class="modal-header">
-                                        <p class="modal-title" id="exampleModalLabel">
-                                            <b> Post : </b>{{ \Carbon\Carbon::parse($rapat->tanggal_rapat)->translatedFormat('d F Y') }}
-                                        </p>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-                                        <div class="container p-2">
-                                            {{-- <div class="d-flex align-items-center justify-content-center"> --}}
-                                            {{-- <div class="col-12 col-sm-8 col-md-6 col-lg-4"> --}}
-                                            <div class="card" style="width: 24rem; margin: 0 auto;">
-                                                <img src="{{ url('storage/' . $rapat->foto) }}" alt="gambar"
-                                                    class="card-img-top"
-                                                    style="height: 195px !important; object-fit: cover;">
-                                                <div class="card-body text-center">
-                                                    <h4>{{ $rapat->agenda_rapat }}</h4>
-                                                    <p style="text-align: justify;">
-                                                        <b>Note:</b><br>{{ $rapat->note }} !!
-                                                    </p>
-                                                    <p style="text-align: justify;">
-                                                        <b>Waktu:</b><br>{{ \Carbon\Carbon::parse($rapat->tanggal_rapat)->translatedFormat('d F Y') }}
-                                                    </p>
-                                                    <p style="text-align: justify;">
-                                                        <b>Tempat:</b><br>{{ $rapat->tempat_rapat }}
-                                                    </p>
-                                                    <p style="text-align: justify;">
-                                                        <b>Hadir:</b><br>{{ $rapat->jumlah_yang_hadir }} orang
-                                                    </p>
-                                                    <p style="text-align: justify;"><b>Tidak
-                                                            Hadir:</b><br>{{ $rapat->jumlah_yang_tidak_hadir }}
-                                                        orang</p>
-                                                    <p style="text-align: justify;">
-                                                        <b>Hasil:</b><br>{{ $rapat->hasil_rapat }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            {{-- </div> --}}
-                                            {{-- </div> --}}
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="post-body">
+                                <div class="post-meta">{{ $tgl($rapat->tanggal_rapat) }} &middot;
+                                    {{ $rapat->tempat_rapat }}</div>
+                                <h3>{{ $rapat->agenda_rapat }}</h3>
                             </div>
+                        </button>
 
-                        </div>
+                        <dialog class="dlg" id="rapat-{{ $rapat->id }}">
+                            <div class="dlg-head">
+                                <span>Rapat: {{ $tgl($rapat->tanggal_rapat) }}</span>
+                                <button type="button" class="dlg-close" data-close
+                                    aria-label="Tutup">&times;</button>
+                            </div>
+                            @if ($rapat->foto)
+                                <img class="dlg-img" src="{{ url('storage/' . $rapat->foto) }}"
+                                    alt="{{ $rapat->agenda_rapat }}" loading="lazy">
+                            @endif
+                            <div class="dlg-body">
+                                <h3>{{ $rapat->agenda_rapat }}</h3>
+                                <p><b>Note</b>{{ $rapat->note }}</p>
+                                <p><b>Waktu</b>{{ $tgl($rapat->tanggal_rapat) }}</p>
+                                <p><b>Tempat</b>{{ $rapat->tempat_rapat }}</p>
+                                <p><b>Hadir</b>{{ $rapat->jumlah_yang_hadir }} orang</p>
+                                <p><b>Tidak Hadir</b>{{ $rapat->jumlah_yang_tidak_hadir }} orang</p>
+                                <p><b>Hasil</b>{{ $rapat->hasil_rapat }}</p>
+                            </div>
+                        </dialog>
                     @endforeach
                 </div>
+            @endif
+        </div>
+    </section>
 
+    {{-- ===== STRUKTUR: BPH (dinamis dari tabel bphs) + kartu departemen ===== --}}
+    <section class="section" id="departemen">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>Struktur Kepengurusan UKM Labbaik</h2>
+                <div class="underline-bar"></div>
             </div>
-        </section><!-- End Team Section -->
-        <!-- Modal -->
 
-        <section id="team" class="team section-bg" style="padding-top:5rem;">
-            <div class="container" data-aos="fade-up">
-
-                <div class="section-title">
-                    <h2>Struktur Anggota UKM labbaik</h2>
+            <div class="bph-banner">
+                <div class="dept-icon" style="background:rgba(252,210,29,.16);"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="#FCD21D" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5Z" />
+                    </svg></div>
+                <div>
+                    <h3>BPH</h3><span class="dept-sub">Badan Pengurus Harian</span>
                 </div>
+            </div>
 
-                <div class="row">
-                    @foreach ($bph as $b)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $b->foto) }}"
-                                        {{-- class="img-fluid" --}} alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                               <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $b->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $b->jabatan }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Angkatan:</strong> {{ $b->angkatan }}
-                                    </p>
-                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Prodi:</strong> {{ $b->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i> 
-                                            <strong>Tanggal Lahir:</strong> {{ $b->tanggal_lahir ? \Carbon\Carbon::parse($b->tanggal_lahir)->translatedFormat('d F Y') : '-' }} 
-                                        </p>
-                                    <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $b->moto }}"</em></span>
-                                        </div>
+            
+            <div class="dept-grid dept-grid-3col">
+                <div class="dept-card">
+                    <div class="dept-icon" style="background:rgba(252,210,29,.14);"><svg viewBox="0 0 24 24"
+                            fill="none" stroke="#FCD21D" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M4 11a9 9 0 0 1 9 9" />
+                            <path d="M4 4a16 16 0 0 1 16 16" />
+                            <circle cx="5" cy="19" r="1" />
+                        </svg></div>
+                    <h3>Kominfo</h3><span class="dept-sub">Komunikasi &amp; Informasi</span>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon" style="background:rgba(74,143,231,.14);"><svg viewBox="0 0 24 24"
+                            fill="none" stroke="#4A8FE7" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+                        </svg></div>
+                    <h3>Syiar</h3><span class="dept-sub">Dakwah &amp; Kajian</span>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon" style="background:rgba(0,23,178,.14);"><svg viewBox="0 0 24 24"
+                            fill="none" stroke="#0017B2" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="5" />
+                            <path d="M20 21a8 8 0 0 0-16 0" />
+                        </svg></div>
+                    <h3>Kemuslimahan</h3><span class="dept-sub">Pembinaan Muslimah</span>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon" style="background:rgba(252,210,29,.14);"><svg viewBox="0 0 24 24"
+                            fill="none" stroke="#FCD21D" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M12 20V10" />
+                            <path d="M18 20V4" />
+                            <path d="M6 20v-4" />
+                        </svg></div>
+                    <h3>PSDM</h3><span class="dept-sub">Pengembangan SDM</span>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon" style="background:rgba(252,210,29,.14);"><svg viewBox="0 0 24 24"
+                            fill="none" stroke="#FCD21D" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <rect x="3" y="7" width="18" height="13" rx="2" />
+                            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        </svg></div>
+                    <h3>KWU</h3><span class="dept-sub">Kewirausahaan</span>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon" style="background:rgba(74,143,231,.14);"><svg viewBox="0 0 24 24"
+                            fill="none" stroke="#4A8FE7" stroke-width="1.6" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="13.5" cy="6.5" r="2.5" />
+                            <path d="M17 12.5c1.5 1 2.5 3 2.5 5.5H4c0-4 3-7 7-7 1 0 1.9.2 2.7.6" />
+                            <path d="M6.5 8.5 4 6" />
+                        </svg></div>
+                    <h3>Minat &amp; Bakat</h3><span class="dept-sub">Minat &amp; Kreativitas</span>
+                </div>
+            </div>
+            <div class="center" style="margin-top:28px;"><a class="btn-outline" href="/detail-anggota">Lihat Semua
+                    Anggota</a></div>
+        </div>
+    </section>
 
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
-                            </div>
+    <section class="section" id="qa">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>Pertanyaan (QA)</h2>
+                <div class="underline-bar"></div>
+            </div>
+            <div class="faq">
+                <details class="faq-item" open>
+                    <summary>Apa itu UKM labbaik ?</summary>
+                    <p>UKM labbaik merupakan Lembaga Dakwah Kampus atau Unit Kerohanian Islam yang menjadi satu-satunya
+                        UKM Kerohanian Islam di Kampus Politeknik Negeri Jember.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Bagaimana struktur kepengurusan di labbaik ?</summary>
+                    <p>Struktur kepengurusan terdiri dari BPH dan enam departemen: Kominfo, Syiar, Kemuslimahan, PSDM,
+                        KWU, dan Minat &amp; Bakat.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Apa saja kegiatan labbaik ?</summary>
+                    <p>Kegiatan meliputi kajian rutin, pembinaan keislaman, pengembangan diri, kewirausahaan, dan
+                        penyaluran minat bakat anggota.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Bagaimana cara join labbaik ?</summary>
+                    <p>Pendaftaran dibuka setiap awal semester melalui open recruitment, atau hubungi kontak yang
+                        tersedia di halaman ini.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Apa saja manfaat bagi saya jika ikut labbaik ?</summary>
+                    <p>Menambah wawasan keislaman, saudara seiman, serta melatih softskill dan hardskill.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <div class="wrap">
+            <div class="section-head">
+                <h2>Contact</h2>
+                <div class="underline-bar"></div>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Jl. Mastrip PO BOX 164, Jember - Jawa Timur - Indonesia</p>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class=" mt-3 d-flex justify-content-center align-content-center align-items-center more">
-                <a href="/detail-anggota" class="btn btn-outline-info col-lg-2 ">Anggota Lain</a>
-            </div>
-            {{-- <div class="section-title content">
-                <a href="#"
-                    class="anggota btn btn-outline-info col-lg-3 justify-content-end align-content-end align-items-end"
-                    style=".anggota {
-                        color: #3498db;
-                    }
-
-                    /* Saat di-hover, teks berubah menjadi putih */
-                    .anggota:hover {
-                        color: #fff;
-                    }">Join
-                    Labbaik yuk</a>
-            </div> --}}
-        </section><!-- End Team Section -->
-
-        <!-- ======= Frequently Asked Questions Section ======= -->
-        <section id="faq" class="faq section-bg">
-            <div class="container" data-aos="fade-up">
-
-                <div class="section-title">
-                    <h2>Pertanyaan (QA)</h2>
-                    {{-- <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum
-                        quidem. Sit
-                        sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit
-                        alias
-                        ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p> --}}
-                </div>
-                <div class="faq-list">
-                    <ul>
-                        <li data-aos="fade-up" data-aos-delay="100">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" class="collapse"
-                                data-bs-target="#faq-list-1">apa itu UKM labbaik ? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-1" class="collapse show" data-bs-parent=".faq-list">
-                                <p>
-                                    UKM labbaik merupakan Lembaga Dakwah Kampus atau Unit Kerohanian Islam yang menjadi
-                                    satu-satunya UKM Kerohanian Islam di Kampus Politeknik Negeri Jember
-                                </p>
-                            </div>
-                        </li>
-                        <li data-aos="fade-up" data-aos-delay="200">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-2" class="collapsed">Bagaimana Struktur kepengurusan di
-                                labbaik ? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-2" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Ada BPH dan 6 departemen diantaranya kominfo, syiar, kemuslimahan, PSDM dan
-                                    kewirausahaan
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="300">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-3" class="collapsed">Apa saja kegiatan labbaik ? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    Tentunya kegiatannya sangat bermanfaat diantaranya ada workshop kemuslimahan, polije
-                                    mengaji, baksos ke panti asuhan dan masih banyak lagi kegiatan lainnya.
-                                </p>
-                            </div>
-                        </li>
-
-                        <li data-aos="fade-up" data-aos-delay="400">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-4" class="collapsed">Bagaimana cara join labbaik ? <i
-                                    class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    sangat mudah kalian bisa join jadi staf muda dulu lalu next step jadi pengurus ukm
-                                    labbaik
-                                </p>
-                            </div>
-                        </li>
-                        <li data-aos="fade-up" data-aos-delay="500">
-                            <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse"
-                                data-bs-target="#faq-list-5" class="collapsed">apa saja manfaat bagi saya jika ikut
-                                labbaik ? <i class="bx bx-chevron-down icon-show"></i><i
-                                    class="bx bx-chevron-up icon-close"></i></a>
-                            <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
-                                <p>
-                                    wah pastinya banyak banget ya guys, kamu bakal punya saudara baru, wawasan keislaman
-                                    semakin bertambah, punya circle temen yang bisa saling mengajak dalam hal kebaikan,
-                                    softskill dan hardskill tentunya juga semakin terasah di dalam organisasi ini.
-                                    <b>jadi tunggu apa lagi yuk join UKM labbaik</b>
-                                </p>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-
-            </div>
-        </section><!-- End Frequently Asked Questions Section -->
-
-        <!-- ======= Contact Section ======= -->
-        <section id="contact" class="contact">
-            <div class="container" data-aos="fade-up">
-
-                <div class="section-title">
-                    <h2>Contact</h2>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-lg-5 d-flex align-items-stretch">
-                        <div class="info">
-                            <div class="address">
-                                <i class="bi bi-geo-alt"></i>
-                                <h4>Location:</h4>
-                                <p>Jl. Mastrip POBOX 164 Sumbersari - Jember</p>
-                            </div>
-
-                            <div class="email">
-                                <i class="bi bi-envelope"></i>
-                                <h4>Email:</h4>
-                                <p> ukm.labaik@polije.ac.id</p>
-                            </div>
-
-                            <div class="phone">
-                                <i class="bi bi-phone"></i>
-                                <h4>Call:</h4>
-                                <p>082143131449</p>
-                            </div>
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3949.4235573861815!2d113.72061207358728!3d-8.160010181752565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd695b617d8f623%3A0xf6c4437632474338!2sPoliteknik%20Negeri%20Jember!5e0!3m2!1sid!2sid!4v1698975674838!5m2!1sid!2sid"
-                                width="100%" height="290px" style="border:0;" allowfullscreen="" loading="lazy"
-                                frameborder="0" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                            <path d="m2 6 10 7 10-7" />
+                        </svg>
+                        <div>
+                            <h4>Email</h4>
+                            <p><a href="mailto:ukm.labaik@polije.ac.id">ukm.labaik@polije.ac.id</a></p>
                         </div>
-
                     </div>
-
-                    <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-                        <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                            <div class="row">
-                                <div class="form-group col-md-6">
-                                    <label for="name">Your Name</label>
-                                    <input type="text" name="name" class="form-control" id="name"
-                                        required>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="name">Your Email</label>
-                                    <input type="email" class="form-control" name="email" id="email"
-                                        required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Subject</label>
-                                <input type="text" class="form-control" name="subject" id="subject" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Message</label>
-                                <textarea class="form-control" name="message" rows="10" required></textarea>
-                            </div>
-                            <div class="my-3">
-                                <div class="loading">Loading</div>
-                                <div class="error-message"></div>
-                                <div class="sent-message">Your message has been sent. Thank you!</div>
-                            </div>
-                            <div class="text-center"><button type="submit">Send Message</button></div>
-                        </form>
+                    <div class="row"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92Z" />
+                        </svg>
+                        <div>
+                            <h4>Call</h4>
+                            <p>083835371950</p>
+                        </div>
                     </div>
-
-                </div>
-
-            </div>
-        </section><!-- End Contact Section -->
-
-    </main><!-- End #main -->
-
-    <!-- ======= Footer ======= -->
-    <footer id="footer">
-
-        {{-- <div class="footer-newsletter">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <h4>Join and Subscribe</h4>
-                        <p>Yuk sobat polije join dan subscribe media sosial labbaik</p>
-                        <a href="#">
-                            <button type="submit">Send Message</button>
+                    <div class="map-embed">
+                        <a class="map-open-badge" href="https://maps.app.goo.gl/3NehHxASY1ixJnE88" target="_blank"
+                            rel="noopener">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                <path d="M15 3h6v6" />
+                                <path d="M10 14 21 3" />
+                            </svg>
+                            Buka di Maps
                         </a>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7220.040937925075!2d113.723073!3d-8.159955!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd695b617d8f623%3A0xf6c4437632474338!2sPoliteknik%20Negeri%20Jember!5e1!3m2!1sid!2sid!4v1790208982331!5m2!1sid!2sid"
+                            loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"
+                            title="Lokasi Politeknik Negeri Jember"></iframe>
                     </div>
                 </div>
-            </div>
-        </div> --}}
 
-        <div class="footer-top section-bg" id="section-bg">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>UKM Labbaik</h3>
-                        <p>
-                            Jl. Mastrip <br>
-                            POBOX 164 Sumbersari<br>
-                            Jember<br><br>
-                            <strong>Phone:</strong> 082143131449<br>
-                            <strong>Email:</strong>ukm.labaik@polije.ac.id<br>
-                        </p>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Penting</h4>
-                        <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#home">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#about">About us</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#services">Visi Misi</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#artikel">Artikel</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#contact">Contact</a></li>
+                <div class="contact-form">
+                    @if (session('contact_success'))
+                        <p class="form-status form-status-success" role="status">{{ session('contact_success') }}</p>
+                    @endif
+                    @if (session('contact_error'))
+                        <p class="form-status form-status-error" role="alert">{{ session('contact_error') }}</p>
+                    @endif
+                    @if ($errors->contact->any())
+                        <ul class="form-status form-status-error" role="alert">
+                            @foreach ($errors->contact->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
                         </ul>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Kegiatan</h4>
-                        <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Mengaji</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Belajar</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Sosialisasi</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Wirausaha</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Silaturahim</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Sosial Media</h4>
-                        <p>Yuk sobat polije join dan subscribe media sosial labbaik</p>
-                        <div class="social-links mt-3">
-                            {{-- <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a> --}}
-                            {{-- <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a> --}}
-                            <a href="https://instagram.com/ukmlabbaik?igshid=MTUxeHM1bXg1dHhsdw==" target="_blank"
-                                class="instagram"><i class="bx bxl-instagram"></i></a>
-                            {{-- <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a> --}}
-                            {{-- <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a> --}}
-                            <a href="https://youtu.be/Wk1Hg7Ehj_A?si=SsY4yU5wLn3plPqo" target="_blank"
-                                class="youtube">
-                                <i class="bx bxl-youtube"></i>
-                            </a>
-
+                    @endif
+                    <form id="contactForm" action="{{ route('contact.send') }}" method="POST">
+                        @csrf
+                        <input type="text" name="website" class="contact-honeypot" tabindex="-1" autocomplete="off"
+                            aria-hidden="true">
+                        <div class="form-grid">
+                            <div class="field"><label for="c-name">Your Name</label><input id="c-name"
+                                    name="name" type="text" placeholder="Nama Anda" value="{{ old('name') }}" required></div>
+                            <div class="field"><label for="c-email">Your Email</label><input id="c-email"
+                                    name="email" type="email" placeholder="email@contoh.com" value="{{ old('email') }}" required></div>
                         </div>
-                    </div>
-
+                        <div class="field" style="margin-bottom:14px;"><label for="c-subject">Subject</label><input
+                                id="c-subject" name="subject" type="text" placeholder="Subjek pesan" value="{{ old('subject') }}" required></div>
+                        <div class="field" style="margin-bottom:16px;"><label for="c-message">Message</label>
+                            <textarea id="c-message" name="message" rows="5" placeholder="Tulis pesan Anda" required>{{ old('message') }}</textarea>
+                        </div>
+                        <button class="btn-primary" type="submit">Send Message</button>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="container footer-bottom clearfix mt-5 p-0">
-            <div class="copyright">
-                &copy; Copyright <strong><span>UKM labbaik</span></strong>
-                <p class="text-center align-content-center align-items-center justify-content-center">source <a
-                        href="https://getbootstrap.com/" target="_blank">bootstrap</a></p>
+    </section>
+    <footer>
+        <div class="wrap">
+            <div class="footer-grid">
+                <div>
+                    <h4>UKM LABBAIK</h4>
+                    <p>Jl. Mastrip PO BOX 164,<br>Jember - Jawa Timur<br>Indonesia</p>
+                    <p style="margin-top:14px;"><strong style="color:var(--text-hi);">Phone:</strong> 083835371950</p>
+                    <p><strong style="color:var(--text-hi);">Email:</strong> <a href="mailto:ukm.labaik@polije.ac.id"
+                            style="display:inline; color:var(--blue); font-weight:500;">ukm.labaik@polije.ac.id</a></p>
+                </div>
+                <div>
+                    <h4>Penting</h4>
+                    <a href="#home">Home</a><a href="#about">About us</a><a href="#visimisi">Visi Misi</a><a
+                        href="#artikel">Artikel</a><a href="#contact">Contact</a>
+                </div>
+                <div>
+                    <h4>Kegiatan</h4>
+                    <a href="#">Mengaji</a><a href="#">Belajar</a><a href="#">Sosialisasi</a><a
+                        href="#">Wirausaha</a><a href="#">Silaturahim</a>
+                </div>
+                <div>
+                    <h4>Sosial Media</h4>
+                    <p>Yuk sobat polije join dan subscribe media sosial labbaik</p>
+                    <div class="social-row">
+                        <a href="https://instagram.com/ukmlabbaik" target="_blank" rel="noopener"
+                            aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="4" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></a>
+                        <a href="https://tiktok.com/@@ukmlabbaik_polije" target="_blank" rel="noopener"
+                            aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <path d="M16 3a5 5 0 0 0 5 5" />
+                                <path d="M16 3v12.5a4.5 4.5 0 1 1-4.5-4.5" />
+                            </svg></a>
+                        <a href="mailto:ukm.labaik@polije.ac.id" aria-label="Email"><svg viewBox="0 0 24 24"
+                                fill="none" stroke-width="1.6">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m2 6 10 7 10-7" />
+                            </svg></a>
+                        <a href="https://youtu.be/Eu6Jm0Pqjjg?si=YzVriXR46g_wsGZQ" target="_blank" rel="noopener"
+                            aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <rect x="2" y="5" width="20" height="14" rx="4" />
+                                <path d="m10 9 5 3-5 3Z" />
+                            </svg></a>
+                    </div>
+                </div>
             </div>
-            <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                {{-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/ --}}
-                Development by <a href="https://www.linkedin.com/in/ahmad-hidayat-a6120b220/" target="_blank">Ahmad
-                    Hidayat</a> <br>
-                {{-- Design by <a href=" https://bootstrapmade.com/license/">bootstrap</a> --}}
-
+            <div class="foot-bottom">
+                <span>&copy; Copyright <strong>UKM Labbaik</strong></span>
+                <span>Development by Departemen Kominfo</span>
             </div>
         </div>
-    </footer><!-- End Footer -->
+    </footer>
+    <script>
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
 
-    <div id="preloader"></div>
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
+        function closeNav() {
+            navLinks.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggle.setAttribute('aria-label', 'Buka menu');
+        }
 
-    <!-- Vendor JS Files -->
-    <script src="{{ URL::asset('users/assets/vendor/aos/aos.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/waypoints/noframework.waypoints.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/php-email-form/validate.js') }}"></script>
+        navToggle.addEventListener('click', () => {
+            const isOpen = navLinks.classList.toggle('is-open');
+            navToggle.setAttribute('aria-expanded', String(isOpen));
+            navToggle.setAttribute('aria-label', isOpen ? 'Tutup menu' : 'Buka menu');
+        });
 
-    <!-- Template Main JS File -->
-    <script src="{{ URL::asset('users/assets/js/main.js') }}"></script>
+        navLinks.addEventListener('click', (event) => {
+            if (event.target.closest('a')) {
+                closeNav();
+            }
+        });
 
-</body>
+        document.addEventListener('click', (event) => {
+            const card = event.target.closest('[data-dialog]');
+            if (card) {
+                const dialog = document.getElementById(card.dataset.dialog);
+                if (dialog instanceof HTMLDialogElement) {
+                    dialog.showModal();
+                }
+                return;
+            }
 
-</html>
+            const closeButton = event.target.closest('[data-close]');
+            if (closeButton) {
+                closeButton.closest('dialog').close();
+                return;
+            }
+
+            if (event.target instanceof HTMLDialogElement && event.target.classList.contains('dlg')) {
+                event.target.close();
+            }
+        });
+    </script>
