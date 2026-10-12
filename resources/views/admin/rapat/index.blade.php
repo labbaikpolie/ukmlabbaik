@@ -1,15 +1,21 @@
 @extends('admin.layouts.main')
 @section('content')
 
+@php
+    $totalHadir = $rapats->sum(fn ($rapat) => (int) $rapat->jumlah_yang_hadir);
+    $totalTidakHadir = $rapats->sum(fn ($rapat) => (int) $rapat->jumlah_yang_tidak_hadir);
+@endphp
+
+<div class="rapat-admin">
 @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show m-3" role="alert">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
 @if ($errors->any())
-    <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
         <strong>Terjadi kesalahan:</strong>
         <ul class="mb-0">
             @foreach ($errors->all() as $error)
@@ -22,19 +28,42 @@
 
 
 @if (session('error'))
-    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
         {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
-    <div class="d-flex justify-content-between mt-3">
-        <button class="btn btn-primary mt-2" type="button" data-bs-toggle="modal" data-bs-target="#addNew">
-            <i class="mdi mdi-library-plus"></i>
-            tambah rapat baru</button>
+    <div class="rapat-heading">
+        <div>
+            <h1>Data Rapat</h1>
+            <div class="rapat-breadcrumb">Admin <span aria-hidden="true">&rsaquo;</span> <strong>Rapat</strong></div>
+        </div>
     </div>
-    <div class="table mt-2 p-3 table-responsive">
-        <table class="table table-bordered table-striped" id="table-rapat">
+
+    <div class="rapat-stats">
+        <div class="rapat-stat">
+            <span class="rapat-stat-icon rapat-stat-icon-total"><i class="mdi mdi-account-outline"></i></span>
+            <span class="rapat-stat-copy"><span>Total Rapat</span><strong>{{ $rapats->count() }}</strong></span>
+        </div>
+        <div class="rapat-stat">
+            <span class="rapat-stat-icon rapat-stat-icon-hadir"><i class="mdi mdi-account-check-outline"></i></span>
+            <span class="rapat-stat-copy"><span>Total Hadir</span><strong>{{ $totalHadir }}</strong></span>
+        </div>
+        <div class="rapat-stat">
+            <span class="rapat-stat-icon rapat-stat-icon-tidak"><i class="mdi mdi-account-outline"></i></span>
+            <span class="rapat-stat-copy"><span>Total Tidak Hadir</span><strong>{{ $totalTidakHadir }}</strong></span>
+        </div>
+    </div>
+
+    <div class="rapat-panel">
+            <div class="rapat-toolbar">
+                <button class="btn btn-primary rapat-add-button" type="button" data-bs-toggle="modal" data-bs-target="#addNew">
+                    <i class="mdi mdi-plus"></i> Tambah Rapat Baru
+                </button>
+            </div>
+        <div class="table-responsive rapat-table-wrap">
+        <table class="table table-hover align-middle rapat-data-table" id="table-rapat">
             <thead>
                 <tr>
                     <th>No</th>
@@ -54,18 +83,20 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->agenda_rapat }}</td>
-                        <td>{{ $item->tanggal_rapat }}</td>
+                        <td>{{ \Illuminate\Support\Carbon::parse($item->tanggal_rapat)->format('d M Y') }}</td>
                         <td>{{ $item->tempat_rapat }}</td>
-                        <td>{{ $item->jumlah_yang_hadir }}</td>
-                        <td>{{ $item->jumlah_yang_tidak_hadir }}</td>
-                        <td class="deskripsi">{{ $item->hasil_rapat }}</td>
+                        <td><span class="rapat-attendance rapat-attendance-present">{{ $item->jumlah_yang_hadir }}</span></td>
+                        <td><span class="rapat-attendance rapat-attendance-absent">{{ $item->jumlah_yang_tidak_hadir }}</span></td>
+                        <td class="deskripsi">
+                            <span class="admin-description-preview">{{ \Illuminate\Support\Str::words($item->hasil_rapat, 12) }}</span>
+                        </td>
                         <td>{{ $item->note }}</td>
                         <td><img src="{{ url('storage/' . $item->foto) }}"
-                                style="width: 50px; height: 50px; object-fit: cover;" alt="gambar" class="rounded-circle">
+                                style="width: 44px; height: 44px; object-fit: cover;" alt="gambar" class="rounded-circle rapat-photo">
                         </td>
                         <td>
-                            <div class="d-flex align-items-center gap-1">
-                                <a href="" class="btn btn-warning" style="color: white;" data-bs-toggle="modal"
+                            <div class="d-flex align-items-center gap-2 rapat-actions">
+                                <a href="" class="btn btn-warning rapat-edit-button" data-bs-toggle="modal"
                                     data-bs-target="#edit{{ $item->id }}">
                                     <i class="mdi mdi-table-edit"></i>Edit</a>
 
@@ -75,8 +106,9 @@
                                     @method('DELETE')
                                     @csrf
                                     <input type="hidden" name="id" value="{{ $item->id }}">
-                                    <button class="btn btn-danger delete-buttons" style="box-sizing: 0" type="submit"><i <i
-                                            class="mdi mdi-delete"></i> Hapus</button>
+                                    <button class="btn btn-danger delete-buttons rapat-delete-button" type="submit">
+                                        <i class="mdi mdi-delete"></i> Hapus
+                                    </button>
                                 </form>
                             </div>
                         </td>
@@ -85,18 +117,16 @@
                     <!-- edit Modal -->
                     <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true" data-bs-backdrop="static">
-                        <div class="modal-dialog bg-white">
-                            <div class="modal-content">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content rapat-modal">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="mdi mdi-table-edit"></i>
-                                        Edit
-                                        Data Rapat</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Rapat</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form action="/admin/rapat/{{ $item->id }}" method="post"
-                                        enctype="multipart/form-data">
+                                        enctype="multipart/form-data" class="admin-edit-form admin-edit-rapat-form">
                                         @csrf
                                         @method('PUT')
                                         <div class="mb-3">
@@ -115,19 +145,18 @@
                                                 value="{{ $item->tempat_rapat }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="jumlah_yang_hadir" class="mb-1">Jumlah Yang Hadir</label>
+                                            <label for="jumlah_yang_hadir" class="mb-1">Jumlah Hadir</label>
                                             <input type="text" class="form-control" id="jumlah_yang_hadir"
                                                 name="jumlah_yang_hadir" value="{{ $item->jumlah_yang_hadir }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="jumlah_yang_tidak_hadir" class="mb-1">Jumlah Yang Tidak
-                                                Hadir</label>
+                                            <label for="jumlah_yang_tidak_hadir" class="mb-1">Jumlah Tidak Hadir</label>
                                             <input type="text" class="form-control" id="jumlah_yang_tidak_hadir"
                                                 name="jumlah_yang_tidak_hadir"
                                                 value="{{ $item->jumlah_yang_tidak_hadir }}">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="hasil_rapat" class="mb-1">hasil_rapat</label>
+                                            <label for="hasil_rapat" class="mb-1">Hasil Rapat</label>
                                             <textarea name="hasil_rapat" id="hasil_rapat" cols="30" rows="3" class="form-control">{{ $item->hasil_rapat }}</textarea>
                                         </div>
                                         <div class="mb-3">
@@ -186,14 +215,16 @@
                 </script>
             </tbody>
         </table>
+        </div>
     </div>
+</div>
 @endsection
 
 {{-- modal add new blog --}}
 <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     data-bs-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content"style="background-color: white">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rapat-modal">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="mdi mdi-library-plus"></i> Tambah Rapat
                     Baru
@@ -201,7 +232,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/admin/saveRapat" method="post" enctype="multipart/form-data">
+                <form action="/admin/saveRapat" method="post" enctype="multipart/form-data"
+                    class="admin-edit-form admin-edit-rapat-form">
                     @csrf
                     <div class="mb-3">
                         <label for="agenda_rapat" class="mb-1">Agenda Rapat</label>
@@ -250,7 +282,19 @@
 @push('script')
     <script>
         $(document).ready(function() {
-            $('#table-rapat').DataTable();
+            $('#table-rapat').DataTable({
+                language: {
+                    lengthMenu: 'Show _MENU_ entries',
+                    search: '',
+                    searchPlaceholder: 'Cari data...',
+                    info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                    infoEmpty: 'Showing 0 entries',
+                    paginate: {
+                        previous: 'Previous',
+                        next: 'Next'
+                    }
+                }
+            });
         });
     </script>
 @endpush

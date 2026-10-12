@@ -12,6 +12,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
@@ -19,6 +20,7 @@
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('style/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin-theme.css') }}">
 
     {{-- <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
@@ -36,13 +38,13 @@
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="brand-logo navbar-brand" href="">
-                    <h2 class="fw-bold" style="color: black; font-weight: bold; font-family: Pacifico">Labbaik</h2>
+                    <h2 class="fw-bold admin-brand"><span aria-hidden="true"></span>Labbaik</h2>
                     {{-- <img
                         src="{{ URL::asset('assets/images/logo_labbaik.png') }}" alt="logo"
                         style="object-fit: cover" /> --}}
                 </a>
                 <a class="navbar-brand brand-logo-mini" href="index.html">
-                    <img src="{{ asset('assets/images/Logo_labbaik.png') }}" alt="" width="100px"
+                    <img src="{{ asset('assets/images/Logo_LABAIK.png') }}" alt="Logo Labbaik"
                         class="py-2" />
 
                     {{-- <img
@@ -68,12 +70,11 @@
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="nav-profile-img">
-                                <img src="{{ URL::asset('assets/images/logo_labbaik.png') }}" alt="image">
-                                <span class="availability-status online"></span>
-                            </div>
                             <div class="nav-profile-text">
                                 <p class="mb-1 text-black">{{ auth()->user()->name }}</p>
+                            </div>
+                            <div class="admin-profile-avatar" aria-hidden="true">
+                                {{ mb_strtoupper(mb_substr(auth()->user()->name, 0, 1)) }}
                             </div>
                         </a>
                         <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
@@ -236,8 +237,102 @@
             @include('admin.partials.sidebar')
             <!-- partial -->
             <div class="main-panel content-wrapper">
-                <div class="card mt-3">
-                    @yield('content')
+                <div class="card mt-3 {{ request()->is('admin/rapat') ? 'admin-rapat-shell' : 'admin-generic-shell' }}">
+                    @unless (request()->is('admin/rapat'))
+                        @php
+                            $adminPageTitle = match (request()->segment(2)) {
+                                null, '' => 'Artikel',
+                                'bph' => 'BPH',
+                                'kominfo' => 'Kominfo',
+                                'syiar' => 'Syiar',
+                                'kemuslimahan' => 'Kemuslimahan',
+                                'psdm' => 'PSDM',
+                                'kwu' => 'KWU',
+                                'minatbakat' => 'Minat & Bakat',
+                                'dashboard' => 'Dashboard',
+                                default => ucfirst(request()->segment(2)),
+                            };
+                            $adminStatCount = match (request()->segment(2)) {
+                                null, '' => isset($data) ? $data->count() : 0,
+                                'bph' => isset($bph) ? $bph->count() : 0,
+                                'kominfo' => isset($kominfo) ? $kominfo->count() : 0,
+                                'syiar' => isset($syiar) ? $syiar->count() : 0,
+                                'kemuslimahan' => isset($kemu) ? $kemu->count() : 0,
+                                'psdm' => isset($psdm) ? $psdm->count() : 0,
+                                'kwu' => isset($kwu) ? $kwu->count() : 0,
+                                'minatbakat' => isset($minatbakat) ? $minatbakat->count() : 0,
+                                default => null,
+                            };
+                            $adminStatCards = [];
+                            if ($adminStatCount !== null) {
+                                $adminStatCards[] = [
+                                    'label' => request()->segment(2) ? 'Total Anggota' : 'Total Artikel',
+                                    'value' => $adminStatCount,
+                                    'icon' => request()->segment(2) ? 'mdi-account-group-outline' : 'mdi-file-document-outline',
+                                    'tone' => 'yellow',
+                                ];
+
+                                if (!request()->segment(2)) {
+                                    $latestArticleDate = isset($data) ? $data->max('tanggal_post') : null;
+                                    $latestArticle = filled($latestArticleDate)
+                                        ? \Illuminate\Support\Carbon::parse($latestArticleDate)->format('d/m')
+                                        : '-';
+                                    $adminStatCards[] = [
+                                        'label' => 'Artikel Terbaru',
+                                        'value' => $latestArticle,
+                                        'icon' => 'mdi-calendar-clock',
+                                        'tone' => 'blue',
+                                    ];
+                                } else {
+                                    $adminMemberCollection = match (request()->segment(2)) {
+                                        'bph' => $bph ?? collect(),
+                                        'kominfo' => $kominfo ?? collect(),
+                                        'syiar' => $syiar ?? collect(),
+                                        'kemuslimahan' => $kemu ?? collect(),
+                                        'psdm' => $psdm ?? collect(),
+                                        'kwu' => $kwu ?? collect(),
+                                        'minatbakat' => $minatbakat ?? collect(),
+                                        default => collect(),
+                                    };
+                                    $adminStatCards[] = [
+                                        'label' => 'Jumlah Prodi',
+                                        'value' => $adminMemberCollection->pluck('prodi')->filter()->unique()->count(),
+                                        'icon' => 'mdi-school',
+                                        'tone' => 'blue',
+                                    ];
+                                    $adminStatCards[] = [
+                                        'label' => 'Jumlah Angkatan',
+                                        'value' => $adminMemberCollection->pluck('angkatan')->filter()->unique()->count(),
+                                        'icon' => 'mdi-account-multiple-outline',
+                                        'tone' => 'green',
+                                    ];
+                                }
+                            }
+                        @endphp
+                        <div class="admin-page-heading">
+                            <div>
+                                <h1>{{ $adminPageTitle === 'Dashboard' ? $adminPageTitle : 'Data ' . $adminPageTitle }}</h1>
+                                <div class="admin-page-breadcrumb">Admin <span aria-hidden="true">&rsaquo;</span>
+                                    <strong>{{ $adminPageTitle }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    @endunless
+                    @if (!request()->is('admin/rapat') && isset($adminStatCount) && $adminStatCount !== null)
+                        <div class="admin-generic-stats">
+                            @foreach ($adminStatCards as $adminStatCard)
+                                <div class="admin-generic-stat">
+                                    <span class="admin-generic-stat-icon admin-generic-stat-icon-{{ $adminStatCard['tone'] }}">
+                                        <i class="mdi {{ $adminStatCard['icon'] }}"></i>
+                                    </span>
+                                    <span><small>{{ $adminStatCard['label'] }}</small><strong>{{ $adminStatCard['value'] }}</strong></span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    <div class="{{ request()->is('admin/rapat') ? '' : 'admin-generic-page' }}">
+                        @yield('content')
+                    </div>
                 </div>
                 {{-- <div class="content-wrapper">
                     <div class="page-header">
@@ -638,6 +733,20 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $.extend(true, $.fn.dataTable.defaults, {
+            language: {
+                search: '',
+                searchPlaceholder: 'Cari data...',
+                lengthMenu: 'Show _MENU_ entries',
+                info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+                paginate: {
+                    previous: 'Previous',
+                    next: 'Next',
+                },
+            },
+        });
+    </script>
     @stack('script');
     <!-- End custom js for this page -->
 </body>

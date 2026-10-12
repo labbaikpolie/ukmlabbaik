@@ -30,7 +30,8 @@ use App\Http\Controllers\MinatBakatController;
 
 Route::get('/',  [LandingPageController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'kirim'])->name('contact.send');
-Route::get('/rapat', fn () => redirect('/#rapat'));
+Route::get('/artikel', [LandingPageController::class, 'artikel'])->name('artikel.index');
+Route::get('/rapat', [LandingPageController::class, 'rapat'])->name('rapat.index');
 Route::get('/detail-anggota',  [LandingPageController::class, 'detail_anggota']);
 
 // Route::get('/cek', [LandingPageController::class, 'index']);

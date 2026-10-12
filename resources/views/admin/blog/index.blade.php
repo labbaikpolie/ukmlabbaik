@@ -31,17 +31,17 @@
     <div class="d-flex justify-content-between mt-1 p-3">
         <button class="btn btn-primary mt-3" type="button" data-bs-toggle="modal" data-bs-target="#addNew">
             <i class="mdi mdi-library-plus"></i>
-            tambah Artikel baru</button>
+            Tambah Artikel Baru</button>
     </div>
-    <div class="table mt-2 p-3 table-responsive">
-        <table class="table table-bordered table-striped" id="table-blog">
+    <div class="mt-2 p-3 table-responsive">
+        <table class="table table-bordered table-striped admin-article-table" id="table-blog">
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Judul</th>
+                    <th class="deskripsi">Deskripsi</th>
                     <th>Tanggal Post</th>
                     <th>Foto</th>
-                    <th class="deskripsi">Deskripsi</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -49,12 +49,16 @@
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->judul }}</td>
+                        <td class="admin-title-cell">
+                            <span class="admin-title-preview">{{ \Illuminate\Support\Str::words($item->judul, 8) }}</span>
+                        </td>
+                        <td class="deskripsi">
+                            <span class="admin-description-preview">{{ \Illuminate\Support\Str::words($item->description, 12) }}</span>
+                        </td>
                         <td>{{ $item->tanggal_post }}</td>
                         <td><img src="{{ url('storage/' . $item->foto) }}"
                                 style="width: 50px; height: 50px; object-fit: cover;" alt="gambar" class="rounded-circle">
                         </td>
-                        <td class="deskripsi">{{ $item->description }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-1">
                                 <a href="" class="btn btn-warning" style="color: white;" data-bs-toggle="modal"
@@ -77,18 +81,16 @@
                     <!-- edit Modal -->
                     <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true" data-bs-backdrop="static">
-                        <div class="modal-dialog bg-white">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="mdi mdi-table-edit"></i>
-                                        Edit
-                                        Data Artikel</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Artikel</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form action="/admin/blog/{{ $item->id }}" method="post"
-                                        enctype="multipart/form-data">
+                                        enctype="multipart/form-data" class="admin-edit-form admin-edit-article-form">
                                         @csrf
                                         @method('PUT')
                                         <div class="mb-3">
@@ -161,8 +163,8 @@
 {{-- modal add new blog --}}
 <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
     data-bs-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content" style="background-color: white">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content admin-form-modal">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="mdi mdi-library-plus"></i> Tambah Blog
                     Baru
@@ -170,7 +172,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/admin/saveBlog" method="post" enctype="multipart/form-data">
+                <form action="/admin/saveBlog" method="post" enctype="multipart/form-data"
+                    class="admin-edit-form admin-edit-article-form">
                     @csrf
                     <div class="mb-3">
                         <label for="judul" class="mb-1">Judul</label>
