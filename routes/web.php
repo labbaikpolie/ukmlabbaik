@@ -13,6 +13,7 @@ use App\Http\Controllers\admin\dashboardController;
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BphController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DetailPengurusController;
 use App\Http\Controllers\MinatBakatController;
 
@@ -28,7 +29,8 @@ use App\Http\Controllers\MinatBakatController;
 */
 
 Route::get('/',  [LandingPageController::class, 'index']);
-Route::get('/rapat',  [LandingPageController::class, 'rapat']);
+Route::post('/contact', [ContactController::class, 'kirim'])->name('contact.send');
+Route::get('/rapat', fn () => redirect('/#rapat'));
 Route::get('/detail-anggota',  [LandingPageController::class, 'detail_anggota']);
 
 // Route::get('/cek', [LandingPageController::class, 'index']);

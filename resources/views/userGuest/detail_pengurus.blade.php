@@ -1,437 +1,450 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>UKM LABBAIK</title>
-    <link rel="shortcut icon" href="{{ asset('/assets/images/Logo Labbaik.png') }}">
-    <!-- Favicons -->
-    <link href="{{ asset('user/assets/img/favicon.png') }}" rel="icon">
-    <link href="{{ asset('/users/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-
-    <!-- Google Fonts -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Struktur Pengurus - UKM LABBAIK</title>
+    <link rel="shortcut icon" href="{{ asset('assets/images/Logo Labbaik.png') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+    {{-- CSS yang sama dengan halaman utama --}}
+    <link href="{{ asset('assets/css/landing.css') }}" rel="stylesheet">
 
-    <!-- Vendor CSS Files -->
-    <link href="{{ asset('/users/assets/vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
-    <link href="{{ asset('/users/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    {{-- Gaya khusus halaman ini (hero kecil + kartu anggota) --}}
+    <style>
+        .page-hero {
+            position: relative;
+            overflow: hidden;
+            padding: 150px 0 70px;
+            text-align: center;
+        }
 
-    <!-- Template Main CSS File -->
-    <link href="{{ asset('/users/assets/css/style.css') }}" rel="stylesheet">
-    <!-- =======================================================
-  * Template Name: Arsha
-  * Updated: Sep 18 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
-  <style>
-     .motto-grid {
+        .page-hero .wrap {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(28px, 5vw, 46px);
+            line-height: 1.2;
+            margin: 18px 0 12px;
+        }
+
+        .page-hero p {
+            margin: 0 0 28px;
+            font-size: 18px;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .chips a {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(74, 143, 231, .28);
+            background: rgba(10, 18, 51, .7);
+            font-size: 14px;
+            font-weight: 600;
+            color: #dbe5ff;
+            transition: .3s;
+        }
+
+        .chips a:hover {
+            background: linear-gradient(90deg, #FCD21D, #4A8FE7);
+            border-color: transparent;
+            color: #0a1233;
+        }
+
+        /* Tombol "Kembali ke Beranda": hover gradasi kuning-biru seperti chip departemen */
+        .btn-outline.btn-back {
+            transition: background .3s, color .3s, border-color .3s, box-shadow .3s, transform .3s;
+        }
+
+        .btn-outline.btn-back:hover,
+        .btn-outline.btn-back:focus-visible {
+            background: linear-gradient(90deg, #FCD21D, #4A8FE7);
+            border-color: transparent;
+            color: #0a1233;
+            box-shadow: 0 6px 24px rgba(252, 210, 29, .25);
+            transform: translateY(-2px);
+        }
+
+        .member-section {
+            scroll-margin-top: 80px;
+        }
+
+        .member-count {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4A8FE7;
+            text-align: center;
+        }
+
+        .member-grid {
             display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 5px;
-            line-height: 1.6;
-            color: #555;
-            margin-top: 5px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .member-card {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            background: #0a1233;
+            border: 1px solid rgba(74, 143, 231, .28);
+            border-radius: 16px;
+            transition: .35s;
+        }
+
+        .member-card:hover {
+            transform: translateY(-6px);
+            border-color: #4A8FE7;
+            box-shadow: 0 14px 40px rgba(26, 60, 160, .35);
+        }
+
+        .member-bph .member-card {
+            border-color: rgba(252, 210, 29, .45);
+            background: radial-gradient(circle at 20% 0%, rgba(252, 210, 29, .1), #0a1233 55%);
+        }
+
+        .member-bph .member-card:hover {
+            border-color: #FCD21D;
+            box-shadow: 0 14px 40px rgba(252, 210, 29, .18);
+        }
+
+        .member-photo {
+            flex: 0 0 108px;
+            width: 108px;
+            height: 150px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #172546;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 8px 24px rgba(74, 143, 231, .25);
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .member-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .member-info h3 {
+            font-size: 18px;
+            margin: 0 0 8px;
+            color: #fff;
+        }
+
+        .member-role {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 3px 14px;
+            border-radius: 50px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #FCD21D;
+            background: rgba(252, 210, 29, .12);
+            border: 1px solid rgba(252, 210, 29, .35);
+        }
+
+        .member-meta {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .member-meta li {
+            display: flex;
+            gap: 10px;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .member-meta svg {
+            flex: 0 0 16px;
+            width: 16px;
+            height: 16px;
+            margin-top: 3px;
+            fill: none;
+            stroke: #4A8FE7;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .member-meta b {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .member-motto {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-left: 3px solid #FCD21D;
+            border-radius: 0 10px 10px 0;
+            background: rgba(74, 143, 231, .08);
+            font-size: 13.5px;
             font-style: italic;
-            }
+            color: #dbe5ff;
+        }
 
-            .motto-grid strong {
+        .member-motto b {
             font-style: normal;
+            color: #fff;
+        }
+
+        .member-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 26px;
+            border: 1px dashed rgba(74, 143, 231, .28);
+            border-radius: 16px;
+            color: #7f93bf;
+        }
+
+        @media (max-width: 900px) {
+            .member-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .page-hero {
+                padding: 120px 0 50px;
             }
 
-            .motto-grid i {
-            color: #3498db;
+            .page-hero p {
+                font-size: 16px;
             }
-     #header {
-    background-color: #2c3e50; /* biru gelap */
-}
-  </style>
+
+            .member-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .member-meta li {
+                justify-content: center;
+            }
+
+            .member-motto {
+                text-align: left;
+            }
+        }
+    </style>
 </head>
 
 <body>
-        <!-- ======= Header ======= -->
-     <header id="header" class="fixed-top ">
-        <div class="container d-flex align-items-center">
-            <h1 class="logo me-auto logo-labbaik" style="color: rgb(255, 255, 255); font-weight: bold;">UKM Labbaik
-            </h1>
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><a class="nav-link scrollto active" href="/">Home</a></li>
-                    <li><a class="nav-link scrollto" href="/">About</a></li>
-                    {{-- <li><a class="nav-link scrollto" href="#team">Team</a></li> --}}
-                    <li><a class="nav-link scrollto" href="/">Visi Misi</a></li>
-                    <li><a class="nav-link scrollto" href="/">Artikel</a></li>
-                    <li class="dropdown"><a href="#"><span>Departement</span> <i
-                                class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#kominfo">Kominfo</a></li>
-                            <li><a href="#syiar">Syiar</a></li>
-                            <li><a href="#kemuslimahan">Kemuslimahan</a></li>
-                            <li><a href="#psdm">PSDM</a></li>
-                            <li><a href="#kewirausahaan">KWU</a></li>
-                            <li><a href="#minatbakat">Minat & Bakat</a></li>
-                        </ul>
-                    </li>
-                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
+    @php
+        $tgl = fn($d) => $d ? \Carbon\Carbon::parse($d)->translatedFormat('d F Y') : '-';
 
+        // Daftar section. 'role' = kolom yang tampil sebagai jabatan di bawah nama.
+        $sections = [
+            ['id' => 'bph', 'nav' => 'BPH', 'title' => 'BPH', 'items' => $bph ?? collect(), 'role' => 'jabatan', 'class' => 'member-bph'],
+            ['id' => 'kominfo', 'nav' => 'Kominfo', 'title' => 'Departement Kominfo', 'items' => $kominfo ?? collect(), 'role' => 'departement', 'class' => ''],
+            ['id' => 'syiar', 'nav' => 'Syiar', 'title' => 'Departement Syiar', 'items' => $syiar ?? collect(), 'role' => 'departement', 'class' => ''],
+            ['id' => 'kemuslimahan', 'nav' => 'Kemuslimahan', 'title' => 'Departement Kemuslimahan', 'items' => $kemuslimahan ?? collect(), 'role' => 'departement', 'class' => ''],
+            ['id' => 'psdm', 'nav' => 'PSDM', 'title' => 'Departement PSDM', 'items' => $psdm ?? collect(), 'role' => 'departement', 'class' => ''],
+            ['id' => 'kewirausahaan', 'nav' => 'KWU', 'title' => 'Departement KWU', 'items' => $kwu ?? collect(), 'role' => 'departement', 'class' => ''],
+            ['id' => 'minatbakat', 'nav' => 'Minat & Bakat', 'title' => 'Departement Minat & Bakat', 'items' => $minatbakat ?? collect(), 'role' => 'departement', 'class' => ''],
+        ];
+    @endphp
+
+    <header>
+        <nav class="wrap">
+            <div class="logo"><span class="logo-dot"></span> UKM LABBAIK</div>
+            <div class="nav-links" id="navLinks">
+                <a href="/#home">Home</a>
+                <a href="/#about">About</a>
+                <a href="/#visimisi">Visi Misi</a>
+                <a href="/#artikel">Artikel</a>
+                <a href="/detail-anggota" class="active">Departemen</a>
+                <a href="/#contact">Contact</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka menu" aria-expanded="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <div class="hero-bg">
+            <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+            <span class="diag d1"></span><span class="diag d2"></span><span class="diag d3"></span>
+            <span class="dot dt1"></span><span class="dot dt2"></span><span class="dot dt3"></span>
+            <span class="ring-loop"></span>
         </div>
-    </header><!-- End Header -->
-    <main id="main">
-        <section id="team" class="team section-bg" style="padding-top:5rem;">
-            <div class="container" data-aos="fade-up">
+        <div class="wrap">
+            <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor" class="star-ic">
+                    <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8Z" />
+                </svg> Politeknik Negeri Jember</span>
+            <h1>Struktur <span class="c-grad">Pengurus</span> UKM Labbaik</h1>
+            <p>Kenali orang-orang di balik Labbaik</p>
+            <div class="chips">
+                @foreach ($sections as $sec)
+                    <a href="#{{ $sec['id'] }}">{{ $sec['nav'] }}</a>
+                @endforeach
+            </div>
+        </div>
+    </section>
 
-                <div class="section-title" id="kominfo">
-                    <h2>Departement Kominfo</h2>
-                </div>
-                <div class="row">
-                    @foreach ($kominfo as $k)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $k->foto) }}" {{-- class="img-fluid" --}}
-                                        alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                                <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $k->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $k->departement }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Angkatan:</strong> {{ $k->angkatan }}
-                                    </p>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Prodi:</strong> {{ $k->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i> 
-                                            <strong>Tanggal Lahir:</strong> {{ $k->tanggal_lahir ? \Carbon\Carbon::parse($k->tanggal_lahir)->translatedFormat('d F Y') : '-' }} 
-                                        </p>
-                                   <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $k->moto }}"</em></span>
-                                        </div>
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="section-title mt-5" id="syiar">
-                    <h2>Departement Syiar</h2>
-                </div>
-                <div class="row">
-                    @foreach ($syiar as $s)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $s->foto) }}" {{-- class="img-fluid" --}}
-                                        alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                                <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $s->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $s->departement }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Angkatan:</strong> {{ $s->angkatan }}
-                                    </p>
-                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Prodi:</strong> {{ $s->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i> 
-                                            <strong>Tanggal Lahir:</strong> {{ $s->tanggal_lahir ? \Carbon\Carbon::parse($s->tanggal_lahir)->translatedFormat('d F Y') : '-' }} 
-                                        </p>
-                                   <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $s->moto }}"</em></span>
-                                        </div>
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+    @foreach ($sections as $sec)
+        <section class="section member-section {{ $sec['class'] }}" id="{{ $sec['id'] }}">
+            <div class="wrap">
+                <div class="section-head">
+                    <h2>{{ $sec['title'] }}</h2>
+                    <div class="underline-bar"></div>
+                    @if (count($sec['items']) > 0)
+                        <span class="member-count">{{ count($sec['items']) }} anggota</span>
+                    @endif
                 </div>
 
-                <div class="section-title mt-5" id="kemuslimahan">
-                    <h2>Departement Kemuslimahan</h2>
-                </div>
-                <div class="row">
-                    @foreach ($kemuslimahan as $km)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $km->foto) }}"
-                                        {{-- class="img-fluid" --}} alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                                <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $km->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $km->departement }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Angkatan:</strong> {{ $km->angkatan }}
-                                    </p>
-                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Prodi:</strong> {{ $km->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i> 
-                                            <strong>Tanggal Lahir:</strong> {{ $km->tanggal_lahir ? \Carbon\Carbon::parse($km->tanggal_lahir)->translatedFormat('d F Y') : '-' }} 
-                                        </p>
-                                    <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $km->moto }}"</em></span>
-                                        </div>
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
+                <div class="member-grid">
+                    @forelse ($sec['items'] as $m)
+                        @php
+                            $foto = !empty($m->foto)
+                                ? url('storage/' . $m->foto)
+                                : asset('assets/images/no-image.png');
+                            $role = $m->{$sec['role']} ?? null;
+                            $moto = trim((string) ($m->moto ?? ''), " \t\n\r\0\x0B\"");
+                        @endphp
+                        <article class="member-card">
+                            <div class="member-photo">
+                                <img src="{{ $foto }}" alt="{{ $m->nama }}" loading="lazy"
+                                    onerror="this.onerror=null;this.src='{{ asset('assets/images/no-image.png') }}';">
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="section-title mt-5" id="psdm">
-                    <h2>Departement PSDM</h2>
-                </div>
-                <div class="row">
-                    @foreach ($psdm as $p)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $p->foto) }}" {{-- class="img-fluid" --}}
-                                        alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                                <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $p->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $p->departement }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Angkatan:</strong> {{ $p->angkatan }}
-                                    </p>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i> 
-                                     <strong>Prodi:</strong> {{ $p->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i> 
-                                            <strong>Tanggal Lahir:</strong> {{ $p->tanggal_lahir ? \Carbon\Carbon::parse($p->tanggal_lahir)->translatedFormat('d F Y') : '-' }} 
-                                        </p>
-                                   <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $p->moto }}"</em></span>
-                                        </div>
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
+                            <div class="member-info">
+                                <h3>{{ $m->nama }}</h3>
+                                @if (!empty($role))
+                                    <span class="member-role">{{ $role }}</span>
+                                @endif
+                                <ul class="member-meta">
+                                    <li>
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                            <circle cx="9" cy="7" r="4" />
+                                            <path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" />
+                                        </svg>
+                                        <span><b>Angkatan:</b> {{ $m->angkatan ?: '-' }}</span>
+                                    </li>
+                                    <li>
+                                        <svg viewBox="0 0 24 24">
+                                            <path d="M22 10 12 5 2 10l10 5 10-5z" />
+                                            <path d="M6 12v5c3 2 9 2 12 0v-5" />
+                                        </svg>
+                                        <span><b>Prodi:</b> {{ $m->prodi ?: '-' }}</span>
+                                    </li>
+                                    <li>
+                                        <svg viewBox="0 0 24 24">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" />
+                                            <path d="M16 2v4M8 2v4M3 10h18" />
+                                        </svg>
+                                        <span><b>Tanggal Lahir:</b> {{ $tgl($m->tanggal_lahir) }}</span>
+                                    </li>
+                                </ul>
+                                @if ($moto !== '')
+                                    <div class="member-motto"><b>Motto:</b> "{{ $moto }}"</div>
+                                @endif
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="section-title mt-5" id="kewirausahaan">
-                    <h2>Departement KWU</h2>
-                </div>
-                <div class="row">
-                    @foreach ($kwu as $kw)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $kw->foto) }}"
-                                        {{-- class="img-fluid" --}} alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                                <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $kw->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $kw->departement }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
-                                     <strong>Angkatan:</strong> {{ $kw->angkatan }}
-                                    </p>
-                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
-                                     <strong>Prodi:</strong> {{ $kw->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i>
-                                            <strong>Tanggal Lahir:</strong> {{ $kw->tanggal_lahir ? \Carbon\Carbon::parse($kw->tanggal_lahir)->translatedFormat('d F Y') : '-' }}
-                                        </p>
-                                    <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $kw->moto }}"</em></span>
-                                        </div>
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="section-title mt-5" id="minatbakat">
-                    <h2>Departement Minat & Bakat</h2>
-                </div>
-                <div class="row">
-                    @foreach ($minatbakat as $mb)
-                        <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
-                            <div class="member d-flex align-items-start">
-                                <div class=""><img src="{{ url('storage/' . $mb->foto) }}"
-                                        {{-- class="img-fluid" --}} alt=""
-                                        style="height: 155px !important; object-fit: cover; width:110px; border-radius: 20px;">
-                                </div>
-                                <div class="member-info">
-                                 <h4 style="font-weight: 700; font-size: 20px; color: #2c3e50;">
-                                   {{ $mb->nama }}
-                                    </h4>
-                                    <span style="font-style: italic; color: #7f8c8d;">
-                                    {{ $mb->departement }}
-                                    </span>
-                                     <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
-                                     <strong>Angkatan:</strong> {{ $mb->angkatan }}
-                                    </p>
-                                    <p><i class="fa fa-user-graduate" style="margin-right: 5px;"></i>
-                                     <strong>Prodi:</strong> {{ $mb->prodi }}
-                                    </p>
-                                        <p><i class="fa fa-calendar-alt" style="margin-right: 5px;"></i>
-                                            <strong>Tanggal Lahir:</strong> {{ $mb->tanggal_lahir ? \Carbon\Carbon::parse($mb->tanggal_lahir)->translatedFormat('d F Y') : '-' }}
-                                        </p>
-                                    <div class="motto-grid">
-                                        <span><i class="fa fa-quote-left" style="margin-right: 5px;"></i><strong>Motto:</strong></span>
-                                        <span><em>"{{ $mb->moto }}"</em></span>
-                                        </div>
-                                    <div class="social">
-                                        {{-- Tambahkan link jika ada --}}
-                                        {{-- <a href="#"><i class="fab fa-instagram"></i></a> --}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                        </article>
+                    @empty
+                        <div class="member-empty">Belum ada data anggota.</div>
+                    @endforelse
                 </div>
             </div>
         </section>
-        <!-- End Team Section -->
+    @endforeach
 
+    <div class="center" style="padding: 10px 0 70px;">
+        <a class="btn-outline btn-back" href="/">&larr; Kembali ke Beranda</a>
+    </div>
 
-
-    </main>
-    <!-- End #main -->
-
-    <!-- ======= Footer ======= -->
-    <footer id="footer">
-        <div class="footer-top section-bg" id="section-bg">
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>UKM Labbaik</h3>
-                        <p>
-                            Jl. Mastrip <br>
-                            POBOX 164 Sumbersari<br>
-                            Jember<br><br>
-                            <strong>Phone:</strong> +1 5589 55488 55<br>
-                            <strong>Email:</strong> labbaikpolije01@gmail.com<br>
-                        </p>
+    <footer>
+        <div class="wrap">
+            <div class="footer-grid">
+                <div>
+                    <h4>UKM LABBAIK</h4>
+                    <p>Jl. Mastrip PO BOX 164,<br>Jember - Jawa Timur<br>Indonesia</p>
+                    <p style="margin-top:14px;"><strong style="color:var(--text-hi);">Phone:</strong> 083835371950</p>
+                    <p><strong style="color:var(--text-hi);">Email:</strong> <a href="mailto:ukm.labaik@polije.ac.id"
+                            style="display:inline; color:var(--blue); font-weight:500;">ukm.labaik@polije.ac.id</a></p>
+                </div>
+                <div>
+                    <h4>Penting</h4>
+                    <a href="/#home">Home</a><a href="/#about">About us</a><a href="/#visimisi">Visi Misi</a><a
+                        href="/#artikel">Artikel</a><a href="/#contact">Contact</a>
+                </div>
+                <div>
+                    <h4>Kegiatan</h4>
+                    <a href="#">Mengaji</a><a href="#">Belajar</a><a href="#">Sosialisasi</a><a
+                        href="#">Wirausaha</a><a href="#">Silaturahim</a>
+                </div>
+                <div>
+                    <h4>Sosial Media</h4>
+                    <p>Yuk sobat polije join dan subscribe media sosial labbaik</p>
+                    <div class="social-row">
+                        <a href="https://instagram.com/ukmlabbaik" target="_blank" rel="noopener"
+                            aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <circle cx="12" cy="12" r="4" />
+                                <circle cx="17.5" cy="6.5" r="1" />
+                            </svg></a>
+                        <a href="https://tiktok.com/@@ukmlabbaik_polije" target="_blank" rel="noopener"
+                            aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <path d="M16 3a5 5 0 0 0 5 5" />
+                                <path d="M16 3v12.5a4.5 4.5 0 1 1-4.5-4.5" />
+                            </svg></a>
+                        <a href="mailto:ukm.labaik@polije.ac.id" aria-label="Email"><svg viewBox="0 0 24 24"
+                                fill="none" stroke-width="1.6">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m2 6 10 7 10-7" />
+                            </svg></a>
+                        <a href="https://youtu.be/Eu6Jm0Pqjjg?si=YzVriXR46g_wsGZQ" target="_blank" rel="noopener"
+                            aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6">
+                                <rect x="2" y="5" width="20" height="14" rx="4" />
+                                <path d="m10 9 5 3-5 3Z" />
+                            </svg></a>
                     </div>
-
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Penting</h4>
-                        <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#home">Home</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#about">About us</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#services">Visi Misi</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#artikel">Artikel</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#contact">Contact</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Kegiatan</h4>
-                        <ul>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Mengaji</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Belajar</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Sosialisasi</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Wirausaha</a></li>
-                            <li><i class="bx bx-chevron-right"></i> <a href="#">Silaturahim</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Sosial Media</h4>
-                        <p>Yuk sobat polije join dan subscribe media sosial labbaik</p>
-                        <div class="social-links mt-3">
-                            {{-- <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-                            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-                            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-                            <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-                            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a> --}}
-                            <a href="https://instagram.com/ukmlabbaik?igshid=MTUxeHM1bXg1dHhsdw==" target="_blank"
-                                class="instagram"><i class="bx bxl-instagram"></i></a>
-                            <a href="https://youtu.be/Wk1Hg7Ehj_A?si=SsY4yU5wLn3plPqo" target="_blank"
-                                class="youtube">
-                                <i class="bx bxl-youtube"></i>
-                            </a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </div>
-
-        <div class="container footer-bottom clearfix">
-            <div class="copyright">
-                &copy; Copyright <strong><span>UKM Labbaik</span></strong>
+            <div class="foot-bottom">
+                <span>&copy; Copyright <strong>UKM Labbaik</strong></span>
+                <span>Development by Departemen Kominfo</span>
             </div>
-           {{--
-            <div class="credits">
-                Development by <a href="https://www.linkedin.com/in/ahmad-hidayat-a6120b220/">Ahmad Hidayat</a>
-            </div> --}}
         </div>
     </footer>
-    <!-- End Footer -->
 
-    <div id="preloader"></div>
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-            class="bi bi-arrow-up-short"></i></a>
-
-    <!-- Vendor JS Files -->
-    <script src="{{ URL::asset('users/assets/vendor/aos/aos.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/waypoints/noframework.waypoints.js') }}"></script>
-    <script src="{{ URL::asset('users/assets/vendor/php-email-form/validate.js') }}"></script>
-
-    <!-- Template Main JS File -->
-    <script src="{{ URL::asset('users/assets/js/main.js') }}"></script>
-
+    <script>
+        // Menu mobile. Jika beranda Anda memakai nama class berbeda untuk menu terbuka,
+        // samakan 'open' di bawah dengan script toggle di halaman beranda.
+        (function() {
+            var t = document.getElementById('navToggle'),
+                l = document.getElementById('navLinks');
+            if (!t || !l) return;
+            t.addEventListener('click', function() {
+                var o = l.classList.toggle('open');
+                t.setAttribute('aria-expanded', o ? 'true' : 'false');
+            });
+        })();
+    </script>
 </body>
 
 </html>
