@@ -123,13 +123,28 @@
         }
 
         .member-photo {
+            position: relative;
+            display: grid;
             flex: 0 0 108px;
             width: 108px;
             height: 150px;
+            place-items: center;
             border-radius: 14px;
             overflow: hidden;
-            background: #172546;
-            box-shadow: 0 0 0 1px rgba(255, 255, 255, .08), 0 8px 24px rgba(74, 143, 231, .25);
+            background: linear-gradient(145deg, #183568, #101d42 72%);
+            box-shadow: 0 0 0 1px rgba(74, 143, 231, .22), 0 8px 24px rgba(0, 23, 178, .2);
+        }
+
+        .member-initials {
+            color: #dbe8ff;
+            font: 700 30px/1 "Sora", sans-serif;
+            letter-spacing: .04em;
+            text-shadow: 0 2px 12px rgba(74, 143, 231, .3);
+        }
+
+        .member-photo img[hidden],
+        .member-initials[hidden] {
+            display: none;
         }
 
         .member-photo img {
@@ -320,16 +335,21 @@
                 <div class="member-grid">
                     @forelse ($sec['items'] as $m)
                         @php
-                            $foto = !empty($m->foto)
-                                ? url('storage/' . $m->foto)
-                                : asset('assets/images/no-image.png');
+                            $foto = !empty($m->foto) ? url('storage/' . $m->foto) : null;
+                            $initials = collect(preg_split('/\s+/u', trim((string) $m->nama), -1, PREG_SPLIT_NO_EMPTY))
+                                ->take(2)
+                                ->map(fn ($part) => \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($part, 0, 1)))
+                                ->implode('');
                             $role = $m->{$sec['role']} ?? null;
                             $moto = trim((string) ($m->moto ?? ''), " \t\n\r\0\x0B\"");
                         @endphp
                         <article class="member-card">
                             <div class="member-photo">
-                                <img src="{{ $foto }}" alt="{{ $m->nama }}" loading="lazy"
-                                    onerror="this.onerror=null;this.src='{{ asset('assets/images/no-image.png') }}';">
+                                <span class="member-initials" @if ($foto) hidden @endif aria-hidden="true">{{ $initials }}</span>
+                                @if ($foto)
+                                    <img src="{{ $foto }}" alt="{{ $m->nama }}" loading="lazy"
+                                        onerror="this.hidden=true;this.previousElementSibling.hidden=false;">
+                                @endif
                             </div>
                             <div class="member-info">
                                 <h3>{{ $m->nama }}</h3>
