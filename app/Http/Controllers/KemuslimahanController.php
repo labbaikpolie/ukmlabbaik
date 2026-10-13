@@ -41,7 +41,7 @@ class KemuslimahanController extends Controller
         if (!empty($kemu['foto'])) {
             $kemu['foto'] = $request->file('foto')->store('kemuslimahan', 'public');
         } else {
-            unset($data['foto']);
+            unset($kemu['foto']);
         }
         Kemuslimahan::findOrFail($id)->update($kemu);
         return redirect('/admin/kemuslimahan')->with('success', 'Data berhasil diperbarui.');

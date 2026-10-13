@@ -100,11 +100,11 @@ class LandingPageController extends Controller
     public function detail_anggota()
     {
         $bph = Bph::all();
-        $kominfo = Kominfo::where('angkatan', '2024')->get();
-        $syiar = Syiar::where('angkatan', '2024')->get();
-        $kemuslimahan = Kemuslimahan::where('angkatan', '2024')->get();
-        $psdm = psdm::where('angkatan', '2024')->get();
-        $kwu = kwu::where('angkatan', '2024')->get();
+        $kominfo = Kominfo::all();
+        $syiar = Syiar::all();
+        $kemuslimahan = Kemuslimahan::all();
+        $psdm = psdm::all();
+        $kwu = kwu::all();
         $minatbakat = MinatBakat::all();
 
         return view('userGuest.detail_pengurus', compact(

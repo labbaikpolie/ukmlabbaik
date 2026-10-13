@@ -2405,7 +2405,29 @@ body {
 
 .admin-generic-page .table {
     width: 100%;
-    table-layout: fixed;
+    min-width: 1100px;
+    table-layout: auto !important;
+}
+
+.admin-generic-page .table tbody td {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.admin-generic-page .table:not(.admin-article-table) tbody td:nth-child(4),
+.admin-generic-page .table:not(.admin-article-table) tbody td:nth-child(5),
+.admin-generic-page .table tbody td.deskripsi {
+    max-width: 240px;
+}
+
+.admin-generic-page .table:not(.admin-article-table) tbody td:nth-last-child(1) {
+    width: 1%;
+    white-space: nowrap !important;
+}
+
+.admin-generic-page .table:not(.admin-article-table) tbody td:nth-last-child(3) {
+    width: 1%;
 }
 
 .admin-generic-page .admin-article-table th:nth-child(1),
