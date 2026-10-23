@@ -2,45 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\HandlesPhotoUpload;
 use App\Models\Bph;
+use App\Support\PhotoUploader;
 use Illuminate\Http\Request;
 
 class BphController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use HandlesPhotoUpload;
+
     public function index()
-{
-    $bph = Bph::all();
+    {
+        $bph = Bph::all();
 
-    return view('admin.bph.index', compact('bph'));
-}
-
+        return view('admin.bph.index', compact('bph'));
+    }
 
     public function store(Request $request)
     {
-        $bph = $request->all();
-        $bph['foto'] = $request->file('foto')->store('bph', 'public');
-        Bph::create($bph);
+        $data = $this->validateRequest($request, [
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jabatan' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|string|max:255',
+            'moto' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'bph');
+        } else {
+            unset($data['foto']);
+        }
+
+        Bph::create($data);
+
         return redirect('/admin/bph')->with('success', 'Data berhasil ditambahkan.');
     }
 
     public function update(Request $request, $id)
     {
-        $bph = $request->all();
-        if (!empty($bph['foto'])) {
-            $bph['foto'] = $request->file('foto')->store('bph', 'public');
+        $data = $this->validateRequest($request, [
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'jabatan' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|string|max:255',
+            'moto' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
+        ]);
+
+        $member = Bph::findOrFail($id);
+        $oldPhoto = $member->foto;
+        if ($request->hasFile('foto')) {
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'bph');
         } else {
-            unset($bph['foto']);
+            unset($data['foto']);
         }
-        Bph::findOrFail($id)->update($bph);
+
+        $member->update($data);
+        if ($request->hasFile('foto')) {
+            PhotoUploader::delete($oldPhoto);
+        }
+
         return redirect('/admin/bph')->with('success', 'Data berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        Bph::findOrFail($id)->delete();
-        return  redirect('/admin/bph')->with('success', 'Data berhasil dihapus.');
+        $member = Bph::findOrFail($id);
+        PhotoUploader::delete($member->foto);
+        $member->delete();
+
+        return redirect('/admin/bph')->with('success', 'Data berhasil dihapus.');
     }
 }

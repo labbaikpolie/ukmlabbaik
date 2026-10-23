@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
+use App\Http\Traits\HandlesPhotoUpload;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kominfo extends Model
 {
+    use HandlesPhotoUpload;
     use HasFactory;
-    protected $guarded = ['id'];
+    use SoftDeletes;
 
-    public function getFotoUrlAttribute()
-    {
-        if (!empty($this->foto) && Storage::disk('public')->exists($this->foto)) {
-            return url('storage/' . $this->foto);
-        }
-        return asset('assets/images/no-image.png');
-    }
+    protected $guarded = ['id'];
 }

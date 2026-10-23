@@ -2,57 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\HandlesPhotoUpload;
 use App\Models\Kemuslimahan;
+use App\Support\PhotoUploader;
 use Illuminate\Http\Request;
 
 class KemuslimahanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use HandlesPhotoUpload;
+
     public function index()
     {
         $kemu = Kemuslimahan::all();
+
         return view('admin.departement.kemuslimahan.index', compact('kemu'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $kemu = $request->all();
-        $kemu['foto'] = $request->file('foto')->store('kemuslimahan', 'public');
-        Kemuslimahan::create($kemu);
+        $data = $this->validateRequest($request, [
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'departement' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|string|max:255',
+            'moto' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'kemuslimahan');
+        } else {
+            unset($data['foto']);
+        }
+
+        Kemuslimahan::create($data);
+
         return redirect('/admin/kemuslimahan')->with('success', 'Data berhasil ditambahkan.');
     }
 
-
     public function update(Request $request, $id)
     {
-        $kemu = $request->all();
-        if (!empty($kemu['foto'])) {
-            $kemu['foto'] = $request->file('foto')->store('kemuslimahan', 'public');
+        $data = $this->validateRequest($request, [
+            'nama' => 'required|string|max:255',
+            'tanggal_lahir' => 'nullable|date',
+            'departement' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|string|max:255',
+            'moto' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
+        ]);
+
+        $member = Kemuslimahan::findOrFail($id);
+        $oldPhoto = $member->foto;
+        if ($request->hasFile('foto')) {
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'kemuslimahan');
         } else {
-            unset($kemu['foto']);
+            unset($data['foto']);
         }
-        Kemuslimahan::findOrFail($id)->update($kemu);
+
+        $member->update($data);
+        if ($request->hasFile('foto')) {
+            PhotoUploader::delete($oldPhoto);
+        }
+
         return redirect('/admin/kemuslimahan')->with('success', 'Data berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        Kemuslimahan::findOrFail($id)->delete();
-        return  redirect('/admin/kemuslimahan')->with('success', 'Data berhasil dihapus.');
+        $member = Kemuslimahan::findOrFail($id);
+        PhotoUploader::delete($member->foto);
+        $member->delete();
+
+        return redirect('/admin/kemuslimahan')->with('success', 'Data berhasil dihapus.');
     }
 }

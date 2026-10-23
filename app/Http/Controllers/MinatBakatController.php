@@ -2,97 +2,79 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\HandlesPhotoUpload;
 use App\Models\MinatBakat;
+use App\Support\PhotoUploader;
 use Illuminate\Http\Request;
 
 class MinatBakatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use HandlesPhotoUpload;
+
     public function index()
     {
         $minatbakat = MinatBakat::all();
+
         return view('admin.departement.minatbakat.index', compact('minatbakat'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required',
+        $data = $this->validateRequest($request, [
+            'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'nullable|date',
-            'departement' => 'nullable|string',
-            'foto' => 'nullable|image|max:2048', // 2MB
+            'departement' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|string|max:255',
             'moto' => 'nullable|string',
-            'angkatan' => 'nullable|string',
-            'prodi' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
         ]);
 
-        $minatbakat = new MinatBakat();
-        $minatbakat->nama = $request->nama;
-        $minatbakat->tanggal_lahir = $request->tanggal_lahir;
-        $minatbakat->departement = $request->departement;
-        $minatbakat->moto = $request->moto;
-        $minatbakat->angkatan = $request->angkatan;
-        $minatbakat->prodi = $request->prodi;
-
         if ($request->hasFile('foto')) {
-            $minatbakat->foto = $request->file('foto')->store('minatbakat', 'public');
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'minatbakat');
+        } else {
+            unset($data['foto']);
         }
 
-        $minatbakat->save();
+        MinatBakat::create($data);
 
         return redirect('/admin/minatbakat')->with('success', 'Data berhasil ditambahkan.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama' => 'required',
+        $data = $this->validateRequest($request, [
+            'nama' => 'required|string|max:255',
             'tanggal_lahir' => 'nullable|date',
-            'departement' => 'nullable|string',
-            'foto' => 'nullable|image|max:2048',
+            'departement' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'angkatan' => 'nullable|string|max:255',
             'moto' => 'nullable|string',
-            'angkatan' => 'nullable|string',
-            'prodi' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
         ]);
 
-        $minatbakat = MinatBakat::findOrFail($id);
-        $minatbakat->nama = $request->nama;
-        $minatbakat->tanggal_lahir = $request->tanggal_lahir;
-        $minatbakat->departement = $request->departement;
-        $minatbakat->moto = $request->moto;
-        $minatbakat->angkatan = $request->angkatan;
-        $minatbakat->prodi = $request->prodi;
-
+        $member = MinatBakat::findOrFail($id);
+        $oldPhoto = $member->foto;
         if ($request->hasFile('foto')) {
-            $minatbakat->foto = $request->file('foto')->store('minatbakat', 'public');
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'minatbakat');
+        } else {
+            unset($data['foto']);
         }
 
-        $minatbakat->save();
+        $member->update($data);
+        if ($request->hasFile('foto')) {
+            PhotoUploader::delete($oldPhoto);
+        }
 
         return redirect('/admin/minatbakat')->with('success', 'Data berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        MinatBakat::findOrFail($id)->delete();
+        $member = MinatBakat::findOrFail($id);
+        PhotoUploader::delete($member->foto);
+        $member->delete();
+
         return redirect('/admin/minatbakat')->with('success', 'Data berhasil dihapus.');
     }
 }

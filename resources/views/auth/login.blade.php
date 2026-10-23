@@ -53,7 +53,4 @@
         <button class="auth-submit" type="submit">{{ __('Login') }}</button>
     </form>
 
-    @if (Route::has('register'))
-        <p class="auth-swap">Belum punya akun? <a class="auth-link" href="{{ route('register') }}">Register</a></p>
-    @endif
 @endsection

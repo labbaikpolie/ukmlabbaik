@@ -12,6 +12,12 @@
         href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link href="{{ asset('assets/css/landing.css') }}" rel="stylesheet">
+    <style>
+        .post-thumb img,
+        .dlg-img {
+            image-orientation: from-image;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,7 +58,7 @@
                 <span class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor" class="star-ic">
                         <path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8Z" />
                     </svg> Politeknik Negeri Jember</span>
-                <h1>Salam <span class="c-grad">labbaik</span> !!!</h1>
+                <h1>Salam <span class="c-grad">LABBAIK</span> !!!</h1>
                 <p>Bersama labbaik ayo lebih baik…</p>
                 <div class="hero-cta">
                     <a class="btn-primary"
@@ -85,7 +91,7 @@
             <div class="section-head">
                 <h2>About Us</h2>
                 <div class="underline-bar"></div>
-                <p>UKM labbaik merupakan Lembaga Dakwah Kampus atau Unit Kerohanian Islam yang menjadi satu-satunya UKM
+                <p>UKM labbaik merupakan Lembaga Aktivis Islam Kampus atau Unit Kerohanian Islam yang menjadi satu-satunya UKM
                     Kerohanian Islam di Kampus Politeknik Negeri Jember. UKM labbaik lahir atas sebuah keinginan yang
                     mulia. Sebuah niat untuk membentuk ladang aktualisasi keislaman. Banyak manfaat yang dapat kita
                     ambil jika bergabung dengan ukm labbaik diantaranya :</p>
@@ -115,22 +121,39 @@
             <div class="section-head">
                 <h2>Visi dan Misi</h2>
                 <div class="underline-bar"></div>
-                <p>Menjadikan UKM labbaik sebagai wadah bagi mahasiswa guna memperdalam ilmu agama dan juga mencetak
-                    mahasiswa yang berakhlak mulia, jujur, serta bertanggung jawab yang diridhoi oleh Allah subhanahu
-                    wata'ala.</p>
             </div>
-            <div class="visi-grid">
-                <div class="visi-card">
-                    <h3>Berjiwa Qurani</h3>
-                    <p>Menciptakan mahasiswa yang berjiwa qurani.</p>
+            <div class="visi-misi-layout">
+                <div class="visi-content">
+                    <h3>Visi</h3>
+                    <p>Menjadi wadah dakwah kampus yang membentuk generasi muslim berilmu, berakhlak, dan berdaya,
+                        melalui lingkungan Islami yang hangat, inklusif, serta mendorong pengembangan potensi setiap
+                        anggotanya.</p>
                 </div>
-                <div class="visi-card">
-                    <h3>Berakhlak Al-Qur'an dan as-Sunnah</h3>
-                    <p>Menciptakan mahasiswa yang senantiasa berakhlak Al-Qur'an dan as-Sunnah.</p>
-                </div>
-                <div class="visi-card">
-                    <h3>Menjunjung tinggi nilai-nilai ketakwaan</h3>
-                    <p>Mahasiswa mampu menjunjung tinggi nilai-nilai ketakwaan dan bernafaskan Islam.</p>
+                <div class="misi-content">
+                    <h3>Misi</h3>
+                    <div class="misi-grid">
+                        <div class="visi-card">
+                            <p>Menguatkan penerapan nilai-nilai Islam dalam setiap aktivitas Labbaik.</p>
+                        </div>
+                        <div class="visi-card">
+                            <p>Mewujudkan komunikasi yang santun dan beradab.</p>
+                        </div>
+                        <div class="visi-card">
+                            <p>Menghadirkan pembinaan keislaman yang terarah dan mudah diikuti.</p>
+                        </div>
+                        <div class="visi-card">
+                            <p>Menciptakan lingkungan Islami yang hangat, inklusif, dan mendukung proses hijrah.</p>
+                        </div>
+                        <div class="visi-card">
+                            <p>Mengembangkan potensi dan soft skill melalui pelatihan dan amanah organisasi kampus.</p>
+                        </div>
+                        <div class="visi-card">
+                            <p>Membangun budaya kekeluargaan dan kolaborasi dalam dakwah kampus.</p>
+                        </div>
+                        <div class="visi-card">
+                            <p>Menguatkan akhlak dan karakter kepemimpinan anggota.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -152,10 +175,7 @@
                     @foreach ($artikel as $item)
                         <button type="button" class="post-card" data-dialog="artikel-{{ $item->id }}">
                             <div class="post-thumb">
-                                @if ($item->foto)
-                                    <img src="{{ url('storage/' . $item->foto) }}" alt="{{ $item->judul }}"
-                                        loading="lazy">
-                                @endif
+                                <img src="{{ $item->foto_url }}" alt="{{ $item->judul }}" loading="lazy">
                             </div>
                             <div class="post-body">
                                 <div class="post-meta">{{ $tgl($item->tanggal_post) }}</div>
@@ -170,10 +190,7 @@
                                 <button type="button" class="dlg-close" data-close
                                     aria-label="Tutup">&times;</button>
                             </div>
-                            @if ($item->foto)
-                                <img class="dlg-img" src="{{ url('storage/' . $item->foto) }}"
-                                    alt="{{ $item->judul }}" loading="lazy">
-                            @endif
+                            <img class="dlg-img" src="{{ $item->foto_url }}" alt="{{ $item->judul }}" loading="lazy">
                             <div class="dlg-body">
                                 <h3>{{ $item->judul }}</h3>
                                 <p>{{ $item->description }}</p>
@@ -204,10 +221,7 @@
                     @foreach ($rapats as $rapat)
                         <button type="button" class="post-card" data-dialog="rapat-{{ $rapat->id }}">
                             <div class="post-thumb">
-                                @if ($rapat->foto)
-                                    <img src="{{ url('storage/' . $rapat->foto) }}" alt="{{ $rapat->agenda_rapat }}"
-                                        loading="lazy">
-                                @endif
+                                <img src="{{ $rapat->foto_url }}" alt="{{ $rapat->agenda_rapat }}" loading="lazy">
                             </div>
                             <div class="post-body">
                                 <div class="post-meta">{{ $tgl($rapat->tanggal_rapat) }} &middot;
@@ -222,10 +236,7 @@
                                 <button type="button" class="dlg-close" data-close
                                     aria-label="Tutup">&times;</button>
                             </div>
-                            @if ($rapat->foto)
-                                <img class="dlg-img" src="{{ url('storage/' . $rapat->foto) }}"
-                                    alt="{{ $rapat->agenda_rapat }}" loading="lazy">
-                            @endif
+                            <img class="dlg-img" src="{{ $rapat->foto_url }}" alt="{{ $rapat->agenda_rapat }}" loading="lazy">
                             <div class="dlg-body">
                                 <h3>{{ $rapat->agenda_rapat }}</h3>
                                 <p><b>Note</b>{{ $rapat->note }}</p>
@@ -337,7 +348,7 @@
             <div class="faq">
                 <details class="faq-item" open>
                     <summary>Apa itu UKM labbaik ?</summary>
-                    <p>UKM labbaik merupakan Lembaga Dakwah Kampus atau Unit Kerohanian Islam yang menjadi satu-satunya
+                    <p>UKM labbaik merupakan Lembaga Aktivis Islam Kampus atau Unit Kerohanian Islam yang menjadi satu-satunya
                         UKM Kerohanian Islam di Kampus Politeknik Negeri Jember.</p>
                 </details>
                 <details class="faq-item">

@@ -152,6 +152,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            image-orientation: from-image;
         }
 
         .member-info {
@@ -335,7 +336,9 @@
                 <div class="member-grid">
                     @forelse ($sec['items'] as $m)
                         @php
-                            $foto = !empty($m->foto) ? url('storage/' . $m->foto) : null;
+                            $foto = !empty($m->foto) && \Illuminate\Support\Facades\Storage::disk('public')->exists($m->foto)
+                                ? $m->foto_url
+                                : null;
                             $initials = collect(preg_split('/\s+/u', trim((string) $m->nama), -1, PREG_SPLIT_NO_EMPTY))
                                 ->take(2)
                                 ->map(fn ($part) => \Illuminate\Support\Str::upper(\Illuminate\Support\Str::substr($part, 0, 1)))

@@ -14,20 +14,15 @@ class AuthPagesTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_login_and_registration_use_the_labbaik_auth_design(): void
+    public function test_login_uses_the_labbaik_auth_design_and_registration_is_disabled(): void
     {
         $this->get('/login')
             ->assertOk()
             ->assertSee('auth-theme.css')
             ->assertSee('Lupa password?');
 
-        $this->get('/register')
-            ->assertOk()
-            ->assertSee('auth-theme.css')
-            ->assertSee('Buat akun baru')
-            ->assertSee('name="password_confirmation"', false)
-            ->assertSee('data-password-toggle', false)
-            ->assertSee('auth-password-toggle', false);
+        $this->get('/register')->assertNotFound();
+        $this->assertStringNotContainsString('route(\'register\')', file_get_contents(resource_path('views/auth/login.blade.php')));
     }
 
     public function test_password_reset_flow_is_available_and_uses_the_auth_design(): void
@@ -44,7 +39,7 @@ class AuthPagesTest extends TestCase
             ->assertSee('data-password-toggle', false);
     }
 
-    public function test_registration_creates_an_account(): void
+    public function test_registration_endpoint_cannot_create_an_account(): void
     {
         $email = Str::uuid() . '@example.test';
 
@@ -53,12 +48,10 @@ class AuthPagesTest extends TestCase
             'email' => $email,
             'password' => 'SecurePass123!',
             'password_confirmation' => 'SecurePass123!',
-        ])
-            ->assertRedirect('/admin')
-            ->assertSessionHasNoErrors();
+        ])->assertNotFound();
 
-        $this->assertAuthenticated();
-        $this->assertDatabaseHas('users', ['email' => $email]);
+        $this->assertGuest();
+        $this->assertDatabaseMissing('users', ['email' => $email]);
     }
 
     public function test_password_reset_request_sends_a_reset_notification(): void

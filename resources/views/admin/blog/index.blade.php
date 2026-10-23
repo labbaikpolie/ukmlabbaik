@@ -56,7 +56,7 @@
                             <span class="admin-description-preview">{{ \Illuminate\Support\Str::words($item->description, 12) }}</span>
                         </td>
                         <td>{{ $item->tanggal_post }}</td>
-                        <td><img src="{{ url('storage/' . $item->foto) }}"
+                        <td><img src="{{ $item->foto_url }}"
                                 style="width: 50px; height: 50px; object-fit: cover;" alt="gambar" class="rounded-circle">
                         </td>
                         <td>
@@ -78,13 +78,18 @@
                         </td>
                     </tr>
 
-                    <!-- edit Modal -->
-                    <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    @endforeach
+
+            </tbody>
+        </table>
+    </div>
+@foreach ($data as $item)
+<div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->id }}"
                         aria-hidden="true" data-bs-backdrop="static">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Artikel</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel{{ $item->id }}">Edit Artikel</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -92,25 +97,30 @@
                                     <form action="/admin/blog/{{ $item->id }}" method="post"
                                         enctype="multipart/form-data" class="admin-edit-form admin-edit-article-form">
                                         @csrf
+                                        <input type="hidden" name="_form_modal" value="edit{{ $item->id }}">
                                         @method('PUT')
                                         <div class="mb-3">
-                                            <label for="judul" class="mb-1">Judul</label>
-                                            <input type="text" class="form-control" id="judul" name="judul"
-                                                value="{{ $item->judul }}">
+                                            <label for="judul{{ $item->id }}" class="mb-1">Judul</label>
+                                            <input type="text" class="form-control" id="judul{{ $item->id }}" name="judul"
+                                                value="{{ old('judul', $item->judul) }}">
+                                            @include('admin.partials.field-error', ['field' => 'judul'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="tanggal_post" class="mb-1">Tanggal Post</label>
-                                            <input type="date" class="form-control" id="tanggal_post" name="tanggal_post"
-                                                value="{{ $item->tanggal_post }}">
+                                            <label for="tanggal_post{{ $item->id }}" class="mb-1">Tanggal Post</label>
+                                            <input type="date" class="form-control" id="tanggal_post{{ $item->id }}" name="tanggal_post"
+                                                value="{{ old('tanggal_post', $item->tanggal_post) }}">
+                                            @include('admin.partials.field-error', ['field' => 'tanggal_post'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="foto" class="mb-1">Foto</label>
-                                            <input type="file" class="form-control" id="foto" name="foto"
-                                                value="{{ $item->foto }}">
+                                            <label for="foto{{ $item->id }}" class="mb-1">Foto</label>
+                                            <input type="file" class="form-control" id="foto{{ $item->id }}" name="foto"
+                                                >
+                                            @include('admin.partials.field-error', ['field' => 'foto'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="description" class="mb-1">Deskripsi</label>
-                                            <textarea name="description" id="description" cols="30" rows="3" class="form-control">{{ $item->description }}</textarea>
+                                            <label for="description{{ $item->id }}" class="mb-1">Deskripsi</label>
+                                            <textarea name="description" id="description{{ $item->id }}" cols="30" rows="3" class="form-control">{{ old('description', $item->description) }}</textarea>
+                                            @include('admin.partials.field-error', ['field' => 'description'])
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -123,42 +133,19 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-                <script>
-                    const deleteButtons = document.querySelectorAll('.delete-buttons');
+@endforeach
 
-                    deleteButtons.forEach(button => {
-                        button.addEventListener('click', function(event) {
-                            event.preventDefault();
 
-                            const id = this.parentNode.querySelector('input[name="id"]').value;
-
-                            Swal.fire({
-                                title: 'Hapus Data?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#d33',
-                                cancelButtonColor: '#3085d6',
-                                confirmButtonText: 'Hapus',
-                                cancelButtonText: 'Batal',
-                                showCloseButton: false,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                                customClass: {
-                                    container: 'my-swal'
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.parentNode.action = '/admin/blog/' + id;
-                                    this.parentNode.submit();
-                                }
-                            });
-                        });
-                    });
-                </script>
-            </tbody>
-        </table>
-    </div>
+@if ($errors->any() && old('_form_modal'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById(@json(old('_form_modal')));
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        });
+    </script>
+@endif
 @endsection
 {{-- modal add new blog --}}
 <div class="modal fade" id="addNew" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
@@ -175,26 +162,31 @@
                 <form action="/admin/saveBlog" method="post" enctype="multipart/form-data"
                     class="admin-edit-form admin-edit-article-form">
                     @csrf
+                    <input type="hidden" name="_form_modal" value="addNew">
                     <div class="mb-3">
                         <label for="judul" class="mb-1">Judul</label>
                         <input type="text" class="form-control" id="judul" name="judul"
-                            placeholder="input judul blog">
-                    </div>
+                            placeholder="input judul blog" value="{{ old('judul') }}">
+                        @include('admin.partials.field-error', ['field' => 'judul'])
+                                        </div>
                     <div class="mb-3">
                         <label for="tanggal_post" class="mb-1">Tanggal Post</label>
                         <input type="date" class="form-control" id="tanggal_post" name="tanggal_post" required
-                            placeholder="input tanggal post">
-                    </div>
+                            placeholder="input tanggal post" value="{{ old('tanggal_post') }}">
+                        @include('admin.partials.field-error', ['field' => 'tanggal_post'])
+                                        </div>
                     <div class="mb-3">
                         <label for="foto" class="mb-1">Foto</label>
                         <input type="file" class="form-control" id="foto" name="foto" required
-                            placeholder="input foto blog">
-                    </div>
+                            placeholder="input foto blog" accept=".jpg,.jpeg,.png,.webp">
+                        @include('admin.partials.field-error', ['field' => 'foto'])
+                                        </div>
                     <div class="mb-3">
                         <label for="description" class="mb-1">Deskripsi</label>
                         <textarea name="description" id="description" cols="30" rows="3" class="form-control"
-                            placeholder="input deskripsi blog"></textarea>
-                    </div>
+                            placeholder="input deskripsi blog">{{ old('description') }}</textarea>
+                        @include('admin.partials.field-error', ['field' => 'description'])
+                                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -206,8 +198,11 @@
 </div>
 @push('script')
     <script>
-        $(document).ready(function() {
-            $('#table-blog').DataTable();
+        document.addEventListener('DOMContentLoaded', function () {
+            const selector = '#table-blog';
+            if (window.jQuery && $.fn.DataTable && !$.fn.DataTable.isDataTable(selector)) {
+                $(selector).DataTable({ language: window.adminDataTableLanguage });
+            }
         });
     </script>
 @endpush

@@ -9,12 +9,9 @@ use App\Http\Controllers\KominfoController;
 use App\Http\Controllers\admin\blogController;
 use App\Http\Controllers\admin\rapatController;
 use App\Http\Controllers\KemuslimahanController;
-use App\Http\Controllers\admin\dashboardController;
-use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BphController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\DetailPengurusController;
 use App\Http\Controllers\MinatBakatController;
 
 /*
@@ -35,10 +32,9 @@ Route::get('/rapat', [LandingPageController::class, 'rapat'])->name('rapat.index
 Route::get('/detail-anggota',  [LandingPageController::class, 'detail_anggota']);
 
 // Route::get('/cek', [LandingPageController::class, 'index']);
-Route::prefix('admin')->middleware(['auth'])->group(function () {
-    // Route::get('/', [dashboardController::class, 'index']);
+Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\AdminNoCacheHeaders::class])->group(function () {
     // blog
-    Route::get('/', [blogController::class, 'index']);
+    Route::get('/', [blogController::class, 'index'])->name('admin.index');
     Route::post('/saveBlog', [blogController::class, 'store']);
     Route::put('/blog/{id}', [blogController::class, 'update']);
     Route::delete('/blog/{id}', [blogController::class, 'destroy']);
@@ -97,6 +93,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::delete('/minatbakat/{id}', [MinatBakatController::class, 'destroy']);
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
