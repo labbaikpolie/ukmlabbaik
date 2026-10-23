@@ -26,26 +26,7 @@
         $isArticle = $type === 'artikel';
     @endphp
 
-    <header>
-        <nav class="wrap">
-            <a class="logo" href="{{ url('/') }}"><span class="logo-dot"></span> UKM LABBAIK</a>
-            <div class="nav-links" id="navLinks">
-                <a href="{{ url('/') }}#home">Home</a>
-                <a href="{{ url('/') }}#about">About</a>
-                <a href="{{ url('/') }}#visimisi">Visi Misi</a>
-                <a href="{{ url('/') }}#artikel">Artikel</a>
-                <a href="{{ url('/') }}#rapat">Rapat</a>
-                <a href="{{ url('/') }}#departemen">Departemen</a>
-                <a href="{{ url('/') }}#contact">Contact</a>
-            </div>
-            <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka menu" aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </nav>
-    </header>
+    @include('userGuest.partials.navbar', ['active' => $type ?? 'artikel'])
 
     <main class="section posts-page">
         <div class="wrap">
@@ -129,24 +110,6 @@
     </main>
 
     <script>
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
-
-        function closeNav() {
-            navLinks.classList.remove('is-open');
-            navToggle.setAttribute('aria-expanded', 'false');
-            navToggle.setAttribute('aria-label', 'Buka menu');
-        }
-
-        navToggle.addEventListener('click', () => {
-            const isOpen = navLinks.classList.toggle('is-open');
-            navToggle.setAttribute('aria-expanded', String(isOpen));
-            navToggle.setAttribute('aria-label', isOpen ? 'Tutup menu' : 'Buka menu');
-        });
-        navLinks.addEventListener('click', (event) => {
-            if (event.target.closest('a')) closeNav();
-        });
-
         document.querySelectorAll('.post-thumb img, .dlg-img').forEach((image) => {
             image.addEventListener('error', () => image.remove(), { once: true });
         });

@@ -21,11 +21,10 @@ class LandingPageController extends Controller
     public function index()
     {
         $artikel = Blog::orderByDesc('tanggal_post')->orderByDesc('id')->take(6)->get();
-        $rapats = Rapat::orderByDesc('tanggal_rapat')->orderByDesc('id')->take(6)->get();
         $bph = Bph::all();
         $bphAkhir = collect();
 
-        return view('userGuest.index', compact('artikel', 'rapats', 'bph', 'bphAkhir'));
+        return view('userGuest.index', compact('artikel', 'bph', 'bphAkhir'));
     }
 
     public function artikel(Request $request)

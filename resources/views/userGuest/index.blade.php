@@ -25,26 +25,7 @@
         $tgl = fn($d) => $d ? \Carbon\Carbon::parse($d)->translatedFormat('d F Y') : '-';
     @endphp
 
-    <header>
-        <nav class="wrap">
-            <div class="logo"><span class="logo-dot"></span> UKM LABBAIK</div>
-            <div class="nav-links" id="navLinks">
-                <a href="#home" class="active">Home</a>
-                <a href="#about">About</a>
-                <a href="#visimisi">Visi Misi</a>
-                <a href="#artikel">Artikel</a>
-                <a href="#rapat">Rapat</a>
-                <a href="#departemen">Departemen</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <button class="nav-toggle" id="navToggle" type="button" aria-label="Buka menu" aria-expanded="false">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </nav>
-    </header>
+    @include('userGuest.partials.navbar')
 
     <section class="hero" id="home">
         <div class="hero-bg">
@@ -201,57 +182,6 @@
             @endif
             <div class="post-list-link">
                 <a class="btn-outline" href="{{ route('artikel.index') }}">Lihat semua artikel</a>
-            </div>
-        </div>
-    </section>
-
-    {{-- ===== RAPAT (dinamis dari tabel rapats) ===== --}}
-    <section class="section" id="rapat">
-        <div class="wrap">
-            <div class="section-head">
-                <h2>Rapat</h2>
-                <div class="underline-bar"></div>
-                <p>Jadwal dan dokumentasi rapat pengurus.</p>
-            </div>
-
-            @if ($rapats->isEmpty())
-                <p class="empty-note">Belum ada data rapat.</p>
-            @else
-                <div class="card-grid">
-                    @foreach ($rapats as $rapat)
-                        <button type="button" class="post-card" data-dialog="rapat-{{ $rapat->id }}">
-                            <div class="post-thumb">
-                                <img src="{{ $rapat->foto_url }}" alt="{{ $rapat->agenda_rapat }}" loading="lazy">
-                            </div>
-                            <div class="post-body">
-                                <div class="post-meta">{{ $tgl($rapat->tanggal_rapat) }} &middot;
-                                    {{ $rapat->tempat_rapat }}</div>
-                                <h3>{{ $rapat->agenda_rapat }}</h3>
-                            </div>
-                        </button>
-
-                        <dialog class="dlg" id="rapat-{{ $rapat->id }}">
-                            <div class="dlg-head">
-                                <span>Rapat: {{ $tgl($rapat->tanggal_rapat) }}</span>
-                                <button type="button" class="dlg-close" data-close
-                                    aria-label="Tutup">&times;</button>
-                            </div>
-                            <img class="dlg-img" src="{{ $rapat->foto_url }}" alt="{{ $rapat->agenda_rapat }}" loading="lazy">
-                            <div class="dlg-body">
-                                <h3>{{ $rapat->agenda_rapat }}</h3>
-                                <p><b>Note</b>{{ $rapat->note }}</p>
-                                <p><b>Waktu</b>{{ $tgl($rapat->tanggal_rapat) }}</p>
-                                <p><b>Tempat</b>{{ $rapat->tempat_rapat }}</p>
-                                <p><b>Hadir</b>{{ $rapat->jumlah_yang_hadir }} orang</p>
-                                <p><b>Tidak Hadir</b>{{ $rapat->jumlah_yang_tidak_hadir }} orang</p>
-                                <p><b>Hasil</b>{{ $rapat->hasil_rapat }}</p>
-                            </div>
-                        </dialog>
-                    @endforeach
-                </div>
-            @endif
-            <div class="post-list-link">
-                <a class="btn-outline" href="{{ route('rapat.index') }}">Lihat semua rapat</a>
             </div>
         </div>
     </section>
@@ -520,26 +450,35 @@
         </div>
     </footer>
     <script>
-        const navToggle = document.getElementById('navToggle');
-        const navLinks = document.getElementById('navLinks');
+        const sectionIds = ['home', 'about', 'visimisi', 'artikel', 'departemen', 'contact'];
+        const navLinksEl = document.getElementById('navLinks');
 
-        function closeNav() {
-            navLinks.classList.remove('is-open');
-            navToggle.setAttribute('aria-expanded', 'false');
-            navToggle.setAttribute('aria-label', 'Buka menu');
+        function updateScrollSpy() {
+            if (!navLinksEl) return;
+            const scrollPos = window.scrollY + 140;
+            let currentSection = 'home';
+
+            for (const id of sectionIds) {
+                const el = document.getElementById(id);
+                if (el && el.offsetTop <= scrollPos) {
+                    currentSection = id;
+                }
+            }
+
+            if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60) {
+                currentSection = 'contact';
+            }
+
+            navLinksEl.querySelectorAll('a').forEach(link => {
+                const href = link.getAttribute('href') || '';
+                const match = href === '#' + currentSection || href.endsWith('/#' + currentSection) || (currentSection === 'home' && (href === '#home' || href === '{{ url('/') }}'));
+                link.classList.toggle('active', match);
+            });
         }
 
-        navToggle.addEventListener('click', () => {
-            const isOpen = navLinks.classList.toggle('is-open');
-            navToggle.setAttribute('aria-expanded', String(isOpen));
-            navToggle.setAttribute('aria-label', isOpen ? 'Tutup menu' : 'Buka menu');
-        });
-
-        navLinks.addEventListener('click', (event) => {
-            if (event.target.closest('a')) {
-                closeNav();
-            }
-        });
+        window.addEventListener('scroll', updateScrollSpy, { passive: true });
+        window.addEventListener('load', updateScrollSpy);
+        updateScrollSpy();
 
         document.addEventListener('click', (event) => {
             const card = event.target.closest('[data-dialog]');

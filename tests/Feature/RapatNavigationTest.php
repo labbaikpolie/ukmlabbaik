@@ -30,11 +30,11 @@ class RapatNavigationTest extends TestCase
             ->assertSee('posts-to');
     }
 
-    public function test_landing_page_links_to_rapat_and_supports_opening_post_details(): void
+    public function test_landing_page_does_not_link_to_rapat_and_supports_opening_post_details(): void
     {
         $this->get('/')
             ->assertOk()
-            ->assertSee('href="#rapat"', false)
+            ->assertDontSee('href="#rapat"', false)
             ->assertSee('showModal()', false);
     }
 }
