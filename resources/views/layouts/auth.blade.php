@@ -26,7 +26,7 @@
             <a class="auth-logo" href="{{ url('/') }}"><i aria-hidden="true"></i> UKM Labbaik</a>
             <div class="auth-intro">
                 <span class="auth-eyebrow"><b>✦</b> Politeknik Negeri Jember</span>
-                <h1>Salam <span>labbaik</span> !!!</h1>
+                <h1>Salam <span>LABBAIK</span> !!!</h1>
                 <p>Bersama labbaik ayo lebih baik…</p>
                 <ul>
                     <li><span aria-hidden="true">✓</span> Menambah wawasan keislaman</li>

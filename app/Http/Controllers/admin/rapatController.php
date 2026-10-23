@@ -2,84 +2,88 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Models\Rapat;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Traits\HandlesPhotoUpload;
+use App\Models\Rapat;
+use App\Support\PhotoUploader;
+use Illuminate\Http\Request;
 
 class rapatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    use HandlesPhotoUpload;
+
     public function index()
     {
         $rapats = Rapat::all();
+
         return view('admin.rapat.index', compact('rapats'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['foto'] = $request->file('foto')->store('rapat', 'public');
+        $data = $this->validateRequest($request, [
+            'agenda_rapat' => 'required|string|max:255',
+            'tanggal_rapat' => 'required|date',
+            'tempat_rapat' => 'required|string|max:255',
+            'jumlah_yang_hadir' => 'required|integer|min:0',
+            'jumlah_yang_tidak_hadir' => 'required|integer|min:0',
+            'hasil_rapat' => 'required|string',
+            'note' => 'required|string|max:255',
+            'foto' => 'required|image|mimes:jpg,jpeg,png,webp|max:8192',
+        ], [
+            'foto.required' => 'Foto rapat wajib diunggah.',
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus JPG, JPEG, PNG, atau WEBP.',
+            'foto.max' => 'Ukuran foto maksimal 8 MB.',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'rapat');
+        }
         Rapat::create($data);
+
         return redirect('/admin/rapat')->with('success', 'Data berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Rapat $rapat)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Rapat $rapat)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
-        $data = $request->all();
-        if (!empty($data['foto'])) {
-            $data['foto'] = $request->file('foto')->store('rapat', 'public');
+        $data = $this->validateRequest($request, [
+            'agenda_rapat' => 'required|string|max:255',
+            'tanggal_rapat' => 'required|date',
+            'tempat_rapat' => 'required|string|max:255',
+            'jumlah_yang_hadir' => 'required|integer|min:0',
+            'jumlah_yang_tidak_hadir' => 'required|integer|min:0',
+            'hasil_rapat' => 'required|string',
+            'note' => 'required|string|max:255',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
+        ], [
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto harus JPG, JPEG, PNG, atau WEBP.',
+            'foto.max' => 'Ukuran foto maksimal 8 MB.',
+        ]);
+
+        $meeting = Rapat::findOrFail($id);
+        $oldPhoto = $meeting->foto;
+        if ($request->hasFile('foto')) {
+            $data['foto'] = PhotoUploader::store($request->file('foto'), 'rapat');
         } else {
             unset($data['foto']);
         }
-        Rapat::findOrFail($id)->update($data);
+
+        $meeting->update($data);
+        if ($request->hasFile('foto')) {
+            PhotoUploader::delete($oldPhoto);
+        }
+
         return redirect('/admin/rapat')->with('success', 'Data berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        Rapat::findOrFail($id)->delete();
-        return  redirect('/admin/rapat')->with('success', 'Data berhasil dihapus.');
-    }
+        $meeting = Rapat::findOrFail($id);
+        PhotoUploader::delete($meeting->foto);
+        $meeting->delete();
 
-    // public function rapat()
-    // {
-    //     $rapats = Rapat::latest()->paginate(3);
-    //     // dd($data);
-    //     return view('userGuest.index', ['rapat' => $rapats]);
-    // }
+        return redirect('/admin/rapat')->with('success', 'Data berhasil dihapus.');
+    }
 }

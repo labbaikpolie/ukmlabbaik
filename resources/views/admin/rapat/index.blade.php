@@ -91,7 +91,7 @@
                             <span class="admin-description-preview">{{ \Illuminate\Support\Str::words($item->hasil_rapat, 12) }}</span>
                         </td>
                         <td>{{ $item->note }}</td>
-                        <td><img src="{{ url('storage/' . $item->foto) }}"
+                        <td><img src="{{ $item->foto_url }}"
                                 style="width: 44px; height: 44px; object-fit: cover;" alt="gambar" class="rounded-circle rapat-photo">
                         </td>
                         <td>
@@ -114,13 +114,20 @@
                         </td>
                     </tr>
 
-                    <!-- edit Modal -->
-                    <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    @endforeach
+
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+@foreach ($rapats as $item)
+<div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->id }}"
                         aria-hidden="true" data-bs-backdrop="static">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content rapat-modal">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Rapat</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel{{ $item->id }}">Edit Rapat</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -128,46 +135,54 @@
                                     <form action="/admin/rapat/{{ $item->id }}" method="post"
                                         enctype="multipart/form-data" class="admin-edit-form admin-edit-rapat-form">
                                         @csrf
+                                        <input type="hidden" name="_form_modal" value="edit{{ $item->id }}">
                                         @method('PUT')
                                         <div class="mb-3">
-                                            <label for="agenda_rapat" class="mb-1">Agenda Rapat</label>
-                                            <input type="text" class="form-control" id="agenda_rapat" name="agenda_rapat"
-                                                value="{{ $item->agenda_rapat }}">
+                                            <label for="agenda_rapat{{ $item->id }}" class="mb-1">Agenda Rapat</label>
+                                            <input type="text" class="form-control" id="agenda_rapat{{ $item->id }}" name="agenda_rapat"
+                                                value="{{ old('agenda_rapat', $item->agenda_rapat) }}">
+                                            @include('admin.partials.field-error', ['field' => 'agenda_rapat'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="tanggal_rapat" class="mb-1">Tanggal Rapat</label>
-                                            <input type="date" class="form-control" id="tanggal_rapat"
-                                                name="tanggal_rapat" value="{{ $item->tanggal_rapat }}">
+                                            <label for="tanggal_rapat{{ $item->id }}" class="mb-1">Tanggal Rapat</label>
+                                            <input type="date" class="form-control" id="tanggal_rapat{{ $item->id }}"
+                                                name="tanggal_rapat" value="{{ old('tanggal_rapat', $item->tanggal_rapat) }}">
+                                            @include('admin.partials.field-error', ['field' => 'tanggal_rapat'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="tempat_rapat" class="mb-1">Tempat Rapat</label>
-                                            <input type="text" class="form-control" id="tempat_rapat" name="tempat_rapat"
-                                                value="{{ $item->tempat_rapat }}">
+                                            <label for="tempat_rapat{{ $item->id }}" class="mb-1">Tempat Rapat</label>
+                                            <input type="text" class="form-control" id="tempat_rapat{{ $item->id }}" name="tempat_rapat"
+                                                value="{{ old('tempat_rapat', $item->tempat_rapat) }}">
+                                            @include('admin.partials.field-error', ['field' => 'tempat_rapat'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="jumlah_yang_hadir" class="mb-1">Jumlah Hadir</label>
-                                            <input type="text" class="form-control" id="jumlah_yang_hadir"
-                                                name="jumlah_yang_hadir" value="{{ $item->jumlah_yang_hadir }}">
+                                            <label for="jumlah_yang_hadir{{ $item->id }}" class="mb-1">Jumlah Hadir</label>
+                                            <input type="number" class="form-control" id="jumlah_yang_hadir{{ $item->id }}"
+                                                name="jumlah_yang_hadir" min="0" value="{{ old('jumlah_yang_hadir', $item->jumlah_yang_hadir) }}">
+                                            @include('admin.partials.field-error', ['field' => 'jumlah_yang_hadir'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="jumlah_yang_tidak_hadir" class="mb-1">Jumlah Tidak Hadir</label>
-                                            <input type="text" class="form-control" id="jumlah_yang_tidak_hadir"
+                                            <label for="jumlah_yang_tidak_hadir{{ $item->id }}" class="mb-1">Jumlah Tidak Hadir</label>
+                                            <input type="number" class="form-control" id="jumlah_yang_tidak_hadir{{ $item->id }}" min="0"
                                                 name="jumlah_yang_tidak_hadir"
-                                                value="{{ $item->jumlah_yang_tidak_hadir }}">
+                                                value="{{ old('jumlah_yang_tidak_hadir', $item->jumlah_yang_tidak_hadir) }}">
+                                            @include('admin.partials.field-error', ['field' => 'jumlah_yang_tidak_hadir'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="hasil_rapat" class="mb-1">Hasil Rapat</label>
-                                            <textarea name="hasil_rapat" id="hasil_rapat" cols="30" rows="3" class="form-control">{{ $item->hasil_rapat }}</textarea>
+                                            <label for="hasil_rapat{{ $item->id }}" class="mb-1">Hasil Rapat</label>
+                                            <textarea name="hasil_rapat" id="hasil_rapat{{ $item->id }}" cols="30" rows="3" class="form-control">{{ old('hasil_rapat', $item->hasil_rapat) }}</textarea>
+                                            @include('admin.partials.field-error', ['field' => 'hasil_rapat'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="note" class="mb-1">Note</label>
-                                            <input type="text" class="form-control" id="note" name="note"
-                                                value="{{ $item->note }}">
+                                            <label for="note{{ $item->id }}" class="mb-1">Note</label>
+                                            <input type="text" class="form-control" id="note{{ $item->id }}" name="note"
+                                                value="{{ old('note', $item->note) }}">
+                                            @include('admin.partials.field-error', ['field' => 'note'])
                                         </div>
                                         <div class="mb-3">
-                                            <label for="foto" class="mb-1">Foto</label>
-                                            <input type="file" class="form-control" id="foto" name="foto"
-                                                value="{{ $item->foto }}">
+                                            <label for="foto{{ $item->id }}" class="mb-1">Foto</label>
+                                            <input type="file" class="form-control" id="foto{{ $item->id }}" name="foto" accept=".jpg,.jpeg,.png,.webp">
+                                            @include('admin.partials.field-error', ['field' => 'foto'])
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -180,44 +195,19 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-                <script>
-                    const deleteButtons = document.querySelectorAll('.delete-buttons');
+@endforeach
 
-                    deleteButtons.forEach(button => {
-                        button.addEventListener('click', function(event) {
-                            event.preventDefault();
 
-                            const id = this.parentNode.querySelector('input[name="id"]').value;
-
-                            Swal.fire({
-                                title: 'Hapus Data?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#d33',
-                                cancelButtonColor: '#3085d6',
-                                confirmButtonText: 'Hapus',
-                                cancelButtonText: 'Batal',
-                                showCloseButton: false,
-                                allowOutsideClick: false,
-                                allowEscapeKey: false,
-                                customClass: {
-                                    container: 'my-swal'
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    this.parentNode.action = '/admin/rapat/' + id;
-                                    this.parentNode.submit();
-                                }
-                            });
-                        });
-                    });
-                </script>
-            </tbody>
-        </table>
-        </div>
-    </div>
-</div>
+@if ($errors->any() && old('_form_modal'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById(@json(old('_form_modal')));
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        });
+    </script>
+@endif
 @endsection
 
 {{-- modal add new blog --}}
@@ -235,41 +225,50 @@
                 <form action="/admin/saveRapat" method="post" enctype="multipart/form-data"
                     class="admin-edit-form admin-edit-rapat-form">
                     @csrf
+                    <input type="hidden" name="_form_modal" value="addNew">
                     <div class="mb-3">
                         <label for="agenda_rapat" class="mb-1">Agenda Rapat</label>
-                        <input type="text" class="form-control" id="agenda_rapat" name="agenda_rapat">
-                    </div>
+                        <input type="text" class="form-control" id="agenda_rapat" name="agenda_rapat" value="{{ old('agenda_rapat') }}">
+                        @include('admin.partials.field-error', ['field' => 'agenda_rapat'])
+                                        </div>
                     <div class="mb-3">
                         <label for="tanggal_rapat" class="mb-1">Tanggal Rapat</label>
-                        <input type="date" class="form-control" id="tanggal_rapat" name="tanggal_rapat">
-                    </div>
+                        <input type="date" class="form-control" id="tanggal_rapat" name="tanggal_rapat" value="{{ old('tanggal_rapat') }}">
+                        @include('admin.partials.field-error', ['field' => 'tanggal_rapat'])
+                                        </div>
                     <div class="mb-3">
                         <label for="tempat_rapat" class="mb-1">Tempat Rapat</label>
-                        <input type="text" class="form-control" id="tempat_rapat" name="tempat_rapat">
-                    </div>
+                        <input type="text" class="form-control" id="tempat_rapat" name="tempat_rapat" value="{{ old('tempat_rapat') }}">
+                        @include('admin.partials.field-error', ['field' => 'tempat_rapat'])
+                                        </div>
                     <div class="mb-3">
                         <label for="jumlah_yang_hadir" class="mb-1">Jumlah Yang Hadir</label>
-                        <input type="text" class="form-control" id="jumlah_yang_hadir" name="jumlah_yang_hadir">
-                    </div>
+                        <input type="number" class="form-control" id="jumlah_yang_hadir" name="jumlah_yang_hadir" value="{{ old('jumlah_yang_hadir') }}" min="0">
+                        @include('admin.partials.field-error', ['field' => 'jumlah_yang_hadir'])
+                                        </div>
                     <div class="mb-3">
                         <label for="jumlah_yang_tidak_hadir" class="mb-1">Jumlah Yang Tidak
                             Hadir</label>
-                        <input type="text" class="form-control" id="jumlah_yang_tidak_hadir"
-                            name="jumlah_yang_tidak_hadir">
-                    </div>
+                        <input type="number" class="form-control" id="jumlah_yang_tidak_hadir"
+                            name="jumlah_yang_tidak_hadir" value="{{ old('jumlah_yang_tidak_hadir') }}" min="0">
+                        @include('admin.partials.field-error', ['field' => 'jumlah_yang_tidak_hadir'])
+                                        </div>
                     <div class="mb-3">
                         <label for="hasil_rapat" class="mb-1">Hasil Rapat</label>
                         <textarea name="hasil_rapat" id="hasil_rapat" cols="30" rows="3" class="form-control"
-                            placeholder="input hasil rapat"></textarea>
-                    </div>
+                            placeholder="input hasil rapat">{{ old('hasil_rapat') }}</textarea>
+                        @include('admin.partials.field-error', ['field' => 'hasil_rapat'])
+                                        </div>
                     <div class="mb-3">
                         <label for="note" class="mb-1">Note</label>
-                        <input type="text" class="form-control" id="note" name="note">
-                    </div>
+                        <input type="text" class="form-control" id="note" name="note" value="{{ old('note') }}">
+                        @include('admin.partials.field-error', ['field' => 'note'])
+                                        </div>
                     <div class="mb-3">
                         <label for="foto" class="mb-1">Foto</label>
-                        <input type="file" class="form-control" id="foto" name="foto">
-                    </div>
+                        <input type="file" class="form-control" id="foto" name="foto" accept=".jpg,.jpeg,.png,.webp" required>
+                        @include('admin.partials.field-error', ['field' => 'foto'])
+                                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -281,20 +280,11 @@
 </div>
 @push('script')
     <script>
-        $(document).ready(function() {
-            $('#table-rapat').DataTable({
-                language: {
-                    lengthMenu: 'Show _MENU_ entries',
-                    search: '',
-                    searchPlaceholder: 'Cari data...',
-                    info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-                    infoEmpty: 'Showing 0 entries',
-                    paginate: {
-                        previous: 'Previous',
-                        next: 'Next'
-                    }
-                }
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            const selector = '#table-rapat';
+            if (window.jQuery && $.fn.DataTable && !$.fn.DataTable.isDataTable(selector)) {
+                $(selector).DataTable({ language: window.adminDataTableLanguage });
+            }
         });
     </script>
 @endpush

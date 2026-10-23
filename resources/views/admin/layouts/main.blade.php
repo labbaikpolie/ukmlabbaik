@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('style/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin-theme.css') }}">
@@ -26,10 +26,14 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/fontawesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" /> --}}
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        img {
+            image-orientation: from-image;
+        }
+    </style>
 </head>
 
 <body>
@@ -252,62 +256,6 @@
                                 'dashboard' => 'Dashboard',
                                 default => ucfirst(request()->segment(2)),
                             };
-                            $adminStatCount = match (request()->segment(2)) {
-                                null, '' => isset($data) ? $data->count() : 0,
-                                'bph' => isset($bph) ? $bph->count() : 0,
-                                'kominfo' => isset($kominfo) ? $kominfo->count() : 0,
-                                'syiar' => isset($syiar) ? $syiar->count() : 0,
-                                'kemuslimahan' => isset($kemu) ? $kemu->count() : 0,
-                                'psdm' => isset($psdm) ? $psdm->count() : 0,
-                                'kwu' => isset($kwu) ? $kwu->count() : 0,
-                                'minatbakat' => isset($minatbakat) ? $minatbakat->count() : 0,
-                                default => null,
-                            };
-                            $adminStatCards = [];
-                            if ($adminStatCount !== null) {
-                                $adminStatCards[] = [
-                                    'label' => request()->segment(2) ? 'Total Anggota' : 'Total Artikel',
-                                    'value' => $adminStatCount,
-                                    'icon' => request()->segment(2) ? 'mdi-account-group-outline' : 'mdi-file-document-outline',
-                                    'tone' => 'yellow',
-                                ];
-
-                                if (!request()->segment(2)) {
-                                    $latestArticleDate = isset($data) ? $data->max('tanggal_post') : null;
-                                    $latestArticle = filled($latestArticleDate)
-                                        ? \Illuminate\Support\Carbon::parse($latestArticleDate)->format('d/m')
-                                        : '-';
-                                    $adminStatCards[] = [
-                                        'label' => 'Artikel Terbaru',
-                                        'value' => $latestArticle,
-                                        'icon' => 'mdi-calendar-clock',
-                                        'tone' => 'blue',
-                                    ];
-                                } else {
-                                    $adminMemberCollection = match (request()->segment(2)) {
-                                        'bph' => $bph ?? collect(),
-                                        'kominfo' => $kominfo ?? collect(),
-                                        'syiar' => $syiar ?? collect(),
-                                        'kemuslimahan' => $kemu ?? collect(),
-                                        'psdm' => $psdm ?? collect(),
-                                        'kwu' => $kwu ?? collect(),
-                                        'minatbakat' => $minatbakat ?? collect(),
-                                        default => collect(),
-                                    };
-                                    $adminStatCards[] = [
-                                        'label' => 'Jumlah Prodi',
-                                        'value' => $adminMemberCollection->pluck('prodi')->filter()->unique()->count(),
-                                        'icon' => 'mdi-school',
-                                        'tone' => 'blue',
-                                    ];
-                                    $adminStatCards[] = [
-                                        'label' => 'Jumlah Angkatan',
-                                        'value' => $adminMemberCollection->pluck('angkatan')->filter()->unique()->count(),
-                                        'icon' => 'mdi-account-multiple-outline',
-                                        'tone' => 'green',
-                                    ];
-                                }
-                            }
                         @endphp
                         <div class="admin-page-heading">
                             <div>
@@ -318,7 +266,7 @@
                             </div>
                         </div>
                     @endunless
-                    @if (!request()->is('admin/rapat') && isset($adminStatCount) && $adminStatCount !== null)
+                    @if (!request()->is('admin/rapat') && $adminStatCount !== null)
                         <div class="admin-generic-stats">
                             @foreach ($adminStatCards as $adminStatCard)
                                 <div class="admin-generic-stat">
@@ -718,36 +666,64 @@
 
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
+    <!-- Base plugins -->
     <script src="{{ asset('assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
     <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
     <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
     <script src="{{ asset('assets/js/misc.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset('assets/js/todolist.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.js"></script>
+    <script defer src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
     <script>
-        $.extend(true, $.fn.dataTable.defaults, {
-            language: {
-                search: '',
-                searchPlaceholder: 'Cari data...',
-                lengthMenu: 'Show _MENU_ entries',
-                info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-                paginate: {
-                    previous: 'Previous',
-                    next: 'Next',
-                },
+        window.adminDataTableLanguage = {
+            search: '',
+            searchPlaceholder: 'Cari data...',
+            lengthMenu: 'Show _MENU_ entries',
+            info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+            infoEmpty: 'Showing 0 entries',
+            paginate: {
+                previous: 'Previous',
+                next: 'Next',
             },
+            emptyTable: 'No data available',
+        };
+    </script>
+    @stack('script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.delete-buttons').forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    if (typeof window.Swal === 'undefined') {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    const form = this.closest('form');
+                    const id = form?.querySelector('input[name="id"]')?.value;
+                    if (!form || !id) {
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Hapus Data?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Hapus',
+                        cancelButtonText: 'Batal',
+                        showCloseButton: false,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        customClass: { container: 'my-swal' }
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
         });
     </script>
-    @stack('script');
     <!-- End custom js for this page -->
 </body>
 

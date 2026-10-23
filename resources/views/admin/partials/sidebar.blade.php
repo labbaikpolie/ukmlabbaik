@@ -2,7 +2,7 @@
     <ul class="nav">
         <li class="admin-menu-label">Menu</li>
         <li class="nav-item {{ request()->is('admin', 'admin/') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('admin') || request()->is('admin/') ? 'active' : '' }}" href="/admin/">
+            <a class="nav-link {{ request()->is('admin') || request()->is('admin/') ? 'active' : '' }}" href="{{ route('admin.index') }}">
                 <span class="menu-title">Artikel</span>
                 <i class="mdi mdi-file-document-outline menu-icon"></i>
             </a>

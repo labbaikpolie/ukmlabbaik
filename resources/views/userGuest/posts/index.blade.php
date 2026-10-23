@@ -12,6 +12,12 @@
         href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <link href="{{ asset('assets/css/landing.css') }}" rel="stylesheet">
+    <style>
+        .post-thumb img,
+        .dlg-img {
+            image-orientation: from-image;
+        }
+    </style>
 </head>
 
 <body>
@@ -81,9 +87,7 @@
                         @endphp
                         <button type="button" class="post-card" data-dialog="{{ $id }}">
                             <div class="post-thumb">
-                                @if ($item->foto)
-                                    <img src="{{ url('storage/' . $item->foto) }}" alt="{{ $title }}" loading="lazy">
-                                @endif
+                                <img src="{{ $item->foto_url }}" alt="{{ $title }}" loading="lazy">
                             </div>
                             <div class="post-body">
                                 <div class="post-meta">{{ $tgl($date) }}@if (!$isArticle) &middot; {{ $item->tempat_rapat }} @endif</div>
@@ -99,9 +103,7 @@
                                 <span>{{ $isArticle ? 'Artikel' : 'Rapat' }}: {{ $tgl($date) }}</span>
                                 <button type="button" class="dlg-close" data-close aria-label="Tutup">&times;</button>
                             </div>
-                            @if ($item->foto)
-                                <img class="dlg-img" src="{{ url('storage/' . $item->foto) }}" alt="{{ $title }}" loading="lazy">
-                            @endif
+                            <img class="dlg-img" src="{{ $item->foto_url }}" alt="{{ $title }}" loading="lazy">
                             <div class="dlg-body">
                                 <h3>{{ $title }}</h3>
                                 @if ($isArticle)
