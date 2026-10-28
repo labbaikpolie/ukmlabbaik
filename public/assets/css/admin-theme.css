@@ -368,13 +368,27 @@ body {
     min-width: 0;
 }
 
-.modal[id^="edit"] .admin-edit-article-form > .mb-3:nth-of-type(1),
-.modal[id^="edit"] .admin-edit-article-form > .mb-3:nth-of-type(4),
-.modal[id^="edit"] .admin-edit-rapat-form > .mb-3:nth-of-type(1),
-.modal[id^="edit"] .admin-edit-rapat-form > .mb-3:nth-of-type(6),
-.modal[id^="edit"] .admin-edit-rapat-form > .mb-3:nth-of-type(7),
-.modal[id^="edit"] .admin-edit-rapat-form > .mb-3:nth-of-type(8) {
+.modal[id^="edit"] .admin-edit-article-form > .mb-3:nth-of-type(1) {
     grid-column: 1 / -1;
+    order: 1;
+}
+
+.modal[id^="edit"] .admin-edit-article-form > .mb-3:nth-of-type(2) {
+    order: 2;
+}
+
+.modal[id^="edit"] .admin-edit-article-form > .mb-3:nth-of-type(3) {
+    order: 3;
+}
+
+.modal[id^="edit"] .admin-edit-article-form > .mb-3:nth-of-type(4) {
+    grid-column: 1 / -1;
+    order: 4;
+}
+
+.modal[id^="edit"] .admin-edit-article-form > .modal-footer {
+    grid-column: 1 / -1;
+    order: 5;
 }
 
 .modal[id^="edit"] .admin-edit-people-form > .mb-3:nth-of-type(1) {
@@ -578,12 +592,6 @@ body {
 
 .modal#addNew .modal-body form.admin-edit-article-form > .mb-3:nth-of-type(1),
 .modal#addNew .modal-body form.admin-edit-article-form > .mb-3:nth-of-type(4),
-.modal#addNew .modal-body form.admin-edit-rapat-form > .mb-3:nth-of-type(1),
-.modal#addNew .modal-body form.admin-edit-rapat-form > .mb-3:nth-of-type(6),
-.modal#addNew .modal-body form.admin-edit-rapat-form > .mb-3:nth-of-type(7),
-.modal#addNew .modal-body form.admin-edit-rapat-form > .mb-3:nth-of-type(8) {
-    grid-column: 1 / -1;
-}
 
 .modal#addNew .modal-body form.admin-edit-people-form > .mb-3:nth-of-type(1) {
     grid-column: 1 / -1;
@@ -775,325 +783,6 @@ body {
     }
 }
 
-.rapat-admin {
-    padding: 26px;
-    color: var(--admin-muted);
-    font-family: "Poppins", "Ubuntu", sans-serif;
-}
-
-.rapat-admin h1,
-.rapat-admin h2 {
-    margin: 0;
-    color: var(--admin-text);
-    font-family: "Sora", "Poppins", sans-serif;
-    font-weight: 700;
-}
-
-.rapat-heading {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 22px;
-}
-
-.rapat-heading h1 {
-    font-size: clamp(22px, 3vw, 28px);
-}
-
-.rapat-breadcrumb {
-    margin-top: 6px;
-    color: #6f84b3;
-    font-size: 13px;
-}
-
-.rapat-breadcrumb span {
-    padding: 0 5px;
-}
-
-.rapat-breadcrumb strong {
-    color: var(--admin-blue);
-    font-weight: 500;
-}
-
-.rapat-stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 22px;
-}
-
-.rapat-stat {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    min-width: 0;
-    padding: 17px 18px;
-    background: rgba(10, 18, 51, 0.88);
-    border: 1px solid var(--admin-border);
-    border-radius: 16px;
-}
-
-.rapat-stat-icon {
-    display: grid;
-    width: 44px;
-    height: 44px;
-    flex: 0 0 44px;
-    place-items: center;
-    border-radius: 12px;
-    font-size: 21px;
-}
-
-.rapat-stat-icon-total {
-    color: var(--admin-yellow);
-    background: rgba(252, 210, 29, 0.14);
-}
-
-.rapat-stat-icon-hadir {
-    color: #86efac;
-    background: rgba(34, 197, 94, 0.14);
-}
-
-.rapat-stat-icon-tidak {
-    color: #fda4af;
-    background: rgba(244, 103, 143, 0.14);
-}
-
-.rapat-stat-copy {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-    font-size: 12px;
-}
-
-.rapat-stat-copy strong {
-    color: var(--admin-text);
-    font: 700 23px "Sora", "Poppins", sans-serif;
-}
-
-.rapat-panel {
-    padding: 22px;
-    background: rgba(10, 18, 51, 0.94);
-    border: 1px solid var(--admin-border);
-    border-radius: 18px;
-}
-
-.rapat-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 18px;
-}
-
-.rapat-toolbar h2 {
-    font-size: 17px;
-}
-
-.rapat-toolbar p {
-    margin: 5px 0 0;
-    color: #7f95c3;
-    font-size: 12px;
-}
-
-.rapat-add-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    min-height: 42px;
-    padding: 9px 18px;
-    border-radius: 50px;
-    box-shadow: 0 6px 22px rgba(252, 210, 29, 0.16);
-}
-
-.rapat-table-wrap {
-    overflow-x: auto;
-    border: 1px solid rgba(74, 143, 231, 0.22);
-    border-radius: 14px;
-}
-
-.rapat-admin .rapat-data-table {
-    min-width: 1080px;
-    margin: 0;
-    color: var(--admin-muted);
-    border-color: rgba(74, 143, 231, 0.14);
-    --bs-table-color: var(--admin-muted);
-    --bs-table-bg: transparent;
-    --bs-table-striped-color: var(--admin-text);
-    --bs-table-striped-bg: rgba(74, 143, 231, 0.045);
-    --bs-table-hover-color: var(--admin-text);
-    --bs-table-hover-bg: rgba(74, 143, 231, 0.075);
-    --bs-table-border-color: rgba(74, 143, 231, 0.14);
-}
-
-.rapat-admin .rapat-data-table thead th {
-    padding: 13px 12px;
-    color: #dbe5ff;
-    background: rgba(74, 143, 231, 0.1);
-    border-bottom: 1px solid var(--admin-border);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.035em;
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-.rapat-admin .rapat-data-table tbody td {
-    padding: 12px;
-    color: var(--admin-muted);
-    background: transparent;
-    border-color: rgba(74, 143, 231, 0.12);
-    font-size: 12px;
-    vertical-align: middle;
-}
-
-.rapat-admin .rapat-data-table tbody tr:hover td {
-    background: rgba(74, 143, 231, 0.07);
-}
-
-.rapat-admin .rapat-data-table tbody td:nth-child(2) {
-    color: var(--admin-text);
-    font-weight: 500;
-}
-
-.rapat-admin .rapat-data-table .rapat-photo {
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 2px rgba(74, 143, 231, 0.1);
-}
-
-.rapat-attendance {
-    display: inline-block;
-    min-width: 34px;
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 12px;
-    font-weight: 600;
-    text-align: center;
-}
-
-.rapat-attendance-present {
-    color: #86efac;
-    background: rgba(34, 197, 94, 0.14);
-}
-
-.rapat-attendance-absent {
-    color: #fda4af;
-    background: rgba(244, 103, 143, 0.14);
-}
-
-.rapat-actions {
-    flex-wrap: nowrap;
-}
-
-.rapat-admin .rapat-edit-button,
-.rapat-admin .rapat-delete-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    min-height: 34px;
-    padding: 6px 10px;
-    border: 0;
-    border-radius: 9px;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.rapat-admin .rapat-edit-button {
-    color: #0a1233 !important;
-    background: var(--admin-yellow);
-}
-
-.rapat-admin .rapat-delete-button {
-    color: #fff;
-    background: #f4678f;
-}
-
-.rapat-admin .dataTables_wrapper {
-    color: var(--admin-muted);
-    font-family: "Poppins", "Ubuntu", sans-serif;
-    font-size: 12px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length,
-.rapat-admin .dataTables_wrapper .dataTables_filter {
-    margin-bottom: 14px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length select,
-.rapat-admin .dataTables_wrapper .dataTables_filter input {
-    height: 38px;
-    padding: 0 11px;
-    border-radius: 10px;
-    font: inherit;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_filter input {
-    margin-left: 8px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_info {
-    padding-top: 15px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_paginate {
-    padding-top: 9px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_paginate .paginate_button {
-    min-width: 36px;
-    padding: 7px 11px;
-    border-radius: 9px;
-}
-
-.rapat-admin .alert {
-    margin-bottom: 18px;
-    border-radius: 12px;
-}
-
-.rapat-modal .modal-title {
-    color: var(--admin-text);
-    font-family: "Sora", "Poppins", sans-serif;
-    font-size: 17px;
-}
-
-.rapat-modal .modal-body {
-    color: var(--admin-muted);
-}
-
-.rapat-modal form {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 14px;
-}
-
-.rapat-modal form > .mb-3:nth-of-type(1),
-.rapat-modal form > .mb-3:nth-of-type(6),
-.rapat-modal form > .mb-3:nth-of-type(7),
-.rapat-modal form > .mb-3:nth-of-type(8),
-.rapat-modal form > .modal-footer {
-    grid-column: 1 / -1;
-}
-
-.rapat-modal .form-control {
-    min-height: 42px;
-    padding: 9px 12px;
-    border-radius: 10px;
-}
-
-.rapat-modal textarea.form-control {
-    min-height: 88px;
-}
-
-.rapat-modal .modal-footer .btn-secondary {
-    color: var(--admin-muted);
-    background: transparent;
-    border-color: var(--admin-border);
-}
-
 @media (max-width: 767px) {
     .modal[id^="edit"] .modal-dialog {
         margin: 12px auto;
@@ -1144,19 +833,6 @@ body {
         padding-left: 16px;
     }
 
-    .rapat-admin {
-        padding: 18px 14px;
-    }
-
-    .rapat-stats {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .rapat-stat {
-        padding: 13px 15px;
-    }
-
 }
 
 @media (max-width: 480px) {
@@ -1185,42 +861,9 @@ body {
         grid-column: 1;
     }
 
-    .rapat-modal form {
-        grid-template-columns: 1fr;
-    }
-
-    .rapat-modal form > .mb-3,
-    .rapat-modal form > .modal-footer {
-        grid-column: 1;
-    }
-
-    .rapat-panel {
-        padding: 15px;
-    }
-
-    .rapat-toolbar {
-        align-items: flex-start;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_length,
-    .rapat-admin .dataTables_wrapper .dataTables_filter {
-        float: none;
-        width: 100%;
-        text-align: left;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_filter input {
-        width: min(100%, 230px);
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_info,
-    .rapat-admin .dataTables_wrapper .dataTables_paginate {
-        float: none;
-        text-align: left;
-    }
 }
 
-/* Screenshot-matched admin shell and Rapat data table. */
+/* Screenshot-matched admin shell. */
 body {
     font-family: "Poppins", "Ubuntu", sans-serif;
     background-color: #06102f;
@@ -1430,228 +1073,6 @@ body {
     padding: 0 24px 24px;
 }
 
-.main-panel > .admin-rapat-shell {
-    margin-top: 0 !important;
-    overflow: visible;
-    color: var(--admin-text);
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-}
-
-.rapat-admin {
-    padding: 22px 0 0;
-}
-
-.rapat-heading {
-    margin-bottom: 19px;
-}
-
-.rapat-heading h1 {
-    font-size: 23px;
-}
-
-.rapat-breadcrumb {
-    margin-top: 2px;
-    font-size: 11px;
-}
-
-.rapat-stats {
-    gap: 13px;
-    margin-bottom: 18px;
-}
-
-.rapat-stat {
-    min-height: 68px;
-    gap: 12px;
-    padding: 12px 15px;
-    background: rgba(10, 18, 51, 0.72);
-    border-color: rgba(74, 143, 231, 0.2);
-    border-radius: 15px;
-}
-
-.rapat-stat-icon {
-    width: 38px;
-    height: 38px;
-    flex-basis: 38px;
-    border-radius: 11px;
-    font-size: 19px;
-}
-
-.rapat-stat-copy {
-    gap: 1px;
-    font-size: 10px;
-}
-
-.rapat-stat-copy strong {
-    font-size: 19px;
-}
-
-.rapat-panel {
-    position: relative;
-    padding: 18px;
-    background: rgba(10, 18, 51, 0.72);
-    border-color: rgba(74, 143, 231, 0.2);
-    border-radius: 17px;
-    box-shadow: none;
-}
-
-.rapat-toolbar {
-    height: 0;
-    margin: 0;
-}
-
-.rapat-toolbar > div {
-    display: none;
-}
-
-.rapat-add-button {
-    position: absolute;
-    z-index: 2;
-    top: 18px;
-    left: 18px;
-    min-height: 35px;
-    padding: 7px 16px;
-    font-size: 11px;
-}
-
-.rapat-table-wrap {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-top: 50px;
-    border: 0;
-    border-radius: 0;
-}
-
-.rapat-admin .dataTables_wrapper {
-    position: relative;
-    color: #a9bde8;
-    font-size: 10px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length,
-.rapat-admin .dataTables_wrapper .dataTables_filter {
-    position: absolute;
-    top: -49px;
-    z-index: 1;
-    display: flex;
-    height: 35px;
-    align-items: center;
-    margin: 0;
-    font-size: 10px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length {
-    right: 241px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_filter {
-    right: 0;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length select,
-.rapat-admin .dataTables_wrapper .dataTables_filter input {
-    height: 34px;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding: 0 10px;
-    border-color: rgba(74, 143, 231, 0.2);
-    border-radius: 10px;
-    background: #060d27;
-    font: inherit;
-    font-size: 10px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length select {
-    width: 62px;
-    margin-right: 6px;
-    margin-left: 7px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_filter input {
-    width: 195px;
-    margin-left: 9px;
-}
-
-.rapat-admin .rapat-data-table {
-    min-width: 980px;
-    border: 1px solid rgba(74, 143, 231, 0.22);
-    border-radius: 13px;
-    overflow: hidden;
-    font-size: 10px;
-}
-
-.rapat-admin .rapat-data-table thead th {
-    padding: 11px 12px;
-    color: #dbe5ff;
-    background: rgba(74, 143, 231, 0.11);
-    border-bottom-color: rgba(74, 143, 231, 0.2);
-    font-size: 9px;
-    letter-spacing: 0.02em;
-}
-
-.rapat-admin .rapat-data-table tbody td {
-    height: 60px;
-    padding: 9px 12px;
-    border-color: rgba(74, 143, 231, 0.1);
-    font-size: 10px;
-    white-space: nowrap;
-}
-
-.rapat-admin .rapat-data-table tbody td:nth-child(7),
-.rapat-admin .rapat-data-table tbody td:nth-child(8) {
-    max-width: 170px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.rapat-admin .rapat-data-table .rapat-photo {
-    width: 38px !important;
-    height: 38px !important;
-    object-fit: cover;
-    border: 0;
-    background: linear-gradient(110deg, var(--admin-yellow), var(--admin-blue));
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
-}
-
-.rapat-attendance {
-    min-width: 29px;
-    padding: 3px 9px;
-    font-size: 10px;
-}
-
-.rapat-actions {
-    gap: 6px !important;
-}
-
-.rapat-admin .rapat-edit-button,
-.rapat-admin .rapat-delete-button {
-    min-height: 28px;
-    padding: 5px 10px;
-    border-radius: 9px;
-    font-size: 10px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_info {
-    padding-top: 13px;
-    font-size: 10px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_paginate {
-    padding-top: 7px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_paginate .paginate_button {
-    min-width: 32px;
-    margin-left: 2px;
-    padding: 6px 10px;
-    border-radius: 9px;
-    font-size: 10px;
-}
-
 @media (min-width: 992px) {
     .sidebar,
     .navbar .navbar-brand-wrapper {
@@ -1688,21 +1109,6 @@ body {
         padding-left: 18px;
     }
 
-    .rapat-admin {
-        padding-top: 20px;
-    }
-
-    .rapat-table-wrap {
-        overflow-x: auto;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_length {
-        right: 215px;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_filter input {
-        width: 170px;
-    }
 }
 
 @media (max-width: 575px) {
@@ -1711,30 +1117,6 @@ body {
         padding-left: 12px;
     }
 
-    .rapat-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .rapat-panel {
-        padding: 12px;
-    }
-
-    .rapat-add-button {
-        left: 12px;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_length {
-        right: auto;
-        left: 0;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_filter {
-        right: 0;
-    }
-
-    .rapat-admin .dataTables_wrapper .dataTables_filter input {
-        width: 135px;
-    }
 }
 
 .admin-generic-stats {
@@ -2146,15 +1528,8 @@ body {
 }
 
 .admin-page-heading h1,
-.rapat-heading h1 {
-    font-size: 26px;
-}
 
 .admin-page-breadcrumb,
-.rapat-breadcrumb {
-    margin-top: 4px;
-    font-size: 12px;
-}
 
 .admin-generic-stats {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -2190,136 +1565,53 @@ body {
 }
 
 .admin-generic-stat small,
-.rapat-stat-copy {
-    font-size: 12px;
-}
 
 .admin-generic-stat strong,
-.rapat-stat-copy strong {
-    font-size: 22px;
-}
 
-.rapat-admin {
-    padding: 28px 0 0;
-}
-
-.rapat-heading {
-    margin-bottom: 22px;
-}
-
-.rapat-stats {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 22px;
-}
-
-.rapat-stat {
-    min-height: 78px;
-    gap: 14px;
-    padding: 16px 18px;
-    border-color: var(--admin-border);
-    border-radius: 16px;
-    background: var(--admin-surface);
-}
-
-.rapat-stat-icon {
-    width: 44px;
-    height: 44px;
-    flex-basis: 44px;
-    border-radius: 12px;
-}
-
-.rapat-panel {
-    padding: 22px;
-    border-color: var(--admin-border);
-    border-radius: 18px;
-    background: var(--admin-surface);
-}
-
-.rapat-add-button {
-    top: 22px;
-    left: 22px;
-    min-height: 40px;
-    padding: 9px 20px;
-    font-size: 13px;
-}
-
-.rapat-table-wrap {
-    padding-top: 58px;
-}
-
-.rapat-admin .dataTables_wrapper,
-.admin-generic-page .dataTables_wrapper {
+,.admin-generic-page .dataTables_wrapper {
     font-size: 12px;
 }
 
-.rapat-admin .dataTables_wrapper .dataTables_length,
-.rapat-admin .dataTables_wrapper .dataTables_filter {
-    top: -55px;
-    height: 40px;
-    font-size: 12px;
-}
-
-.rapat-admin .dataTables_wrapper .dataTables_length select,
-.rapat-admin .dataTables_wrapper .dataTables_filter input,
-.admin-generic-page .dataTables_wrapper .dataTables_length select,
-.admin-generic-page .dataTables_wrapper .dataTables_filter input {
+,,.admin-generic-page .dataTables_wrapper .dataTables_length select,,.admin-generic-page .dataTables_wrapper .dataTables_filter input {
     height: 40px;
     padding: 0 14px;
     font-size: 12px;
 }
 
-.rapat-admin .dataTables_wrapper .dataTables_filter input {
-    width: 230px;
-}
-
-.rapat-admin .rapat-data-table,
-.admin-generic-page .table {
+,.admin-generic-page .table {
     min-width: 980px;
     font-size: 13px;
 }
 
-.rapat-admin .rapat-data-table thead th,
-.admin-generic-page .table thead th {
+,.admin-generic-page .table thead th {
     padding: 13px 14px;
     font-size: 12px;
 }
 
-.rapat-admin .rapat-data-table tbody td,
-.admin-generic-page .table tbody td {
+,.admin-generic-page .table tbody td {
     height: auto;
     padding: 13px 14px;
     font-size: 13px;
 }
 
-.rapat-attendance {
-    font-size: 12px;
-}
-
-.rapat-admin .rapat-edit-button,
-.rapat-admin .rapat-delete-button,
-.admin-generic-page .table .btn-warning,
-.admin-generic-page .table .btn-danger {
+,,.admin-generic-page .table .btn-warning,,.admin-generic-page .table .btn-danger {
     min-height: 34px;
     padding: 7px 14px;
     border-radius: 10px;
     font-size: 12px;
 }
 
-.rapat-admin .dataTables_wrapper .dataTables_length select,
-.admin-generic-page .dataTables_wrapper .dataTables_length select {
+,.admin-generic-page .dataTables_wrapper .dataTables_length select {
     width: auto;
     margin-right: 6px;
     margin-left: 7px;
 }
 
-.rapat-admin .dataTables_wrapper .dataTables_info,
-.admin-generic-page .dataTables_wrapper .dataTables_info {
+,.admin-generic-page .dataTables_wrapper .dataTables_info {
     font-size: 12px;
 }
 
-.rapat-admin .dataTables_wrapper .dataTables_paginate .paginate_button,
-.admin-generic-page .dataTables_wrapper .dataTables_paginate .paginate_button {
+,.admin-generic-page .dataTables_wrapper .dataTables_paginate .paginate_button {
     min-width: 36px;
     padding: 8px 12px;
     font-size: 12px;
@@ -2481,14 +1773,6 @@ body {
 }
 
 .admin-generic-page .admin-description-preview,
-.rapat-admin .admin-description-preview {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-height: 1.45;
-    overflow-wrap: anywhere;
-}
 
 @media (min-width: 992px) {
     .sidebar,
@@ -2529,9 +1813,6 @@ body {
         margin-bottom: 18px;
     }
 
-    .rapat-admin {
-        padding-top: 22px;
-    }
 }
 
 @media (max-width: 767px) {
@@ -2587,20 +1868,5 @@ body {
     }
 
     .admin-generic-stats,
-    .rapat-stats {
-        grid-template-columns: 1fr;
-    }
 
-    .rapat-admin {
-        padding-top: 18px;
-    }
-
-    .rapat-panel {
-        padding: 15px;
-    }
-
-    .rapat-add-button {
-        top: 15px;
-        left: 15px;
-    }
 }

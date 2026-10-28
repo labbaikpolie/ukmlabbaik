@@ -13,5 +13,13 @@ class psdm extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'nama',
+        'tanggal_lahir',
+        'departement',
+        'foto',
+        'moto',
+        'angkatan',
+        'prodi',
+    ];
 }

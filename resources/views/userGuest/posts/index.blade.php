@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>{{ $type === 'artikel' ? 'Semua Artikel' : 'Semua Rapat' }} - UKM LABBAIK</title>
+    <title>Semua Artikel - UKM LABBAIK</title>
     <link rel="shortcut icon" href="{{ asset('assets/images/Logo Labbaik.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,24 +23,23 @@
 <body>
     @php
         $tgl = fn($date) => $date ? \Carbon\Carbon::parse($date)->translatedFormat('d F Y') : '-';
-        $isArticle = $type === 'artikel';
     @endphp
 
-    @include('userGuest.partials.navbar', ['active' => $type ?? 'artikel'])
+    @include('userGuest.partials.navbar', ['active' => 'artikel'])
 
     <main class="section posts-page">
         <div class="wrap">
             <div class="section-head">
-                <h1>{{ $isArticle ? 'Semua Artikel' : 'Semua Rapat' }}</h1>
+                <h1>Semua Artikel</h1>
                 <div class="underline-bar"></div>
-                <p>{{ $isArticle ? 'Jelajahi seluruh artikel terbaru dari LABBAIK.' : 'Jelajahi jadwal dan dokumentasi rapat pengurus.' }}</p>
+                <p>Jelajahi seluruh artikel terbaru dari LABBAIK.</p>
             </div>
 
-            <form class="posts-filter" method="GET" action="{{ $isArticle ? route('artikel.index') : route('rapat.index') }}">
+            <form class="posts-filter" method="GET" action="{{ route('artikel.index') }}">
                 <div class="field posts-search">
                     <label for="posts-query">Kata kunci</label>
                     <input id="posts-query" type="search" name="q" value="{{ $search }}"
-                        placeholder="{{ $isArticle ? 'Cari judul atau isi artikel' : 'Cari agenda, tempat, atau hasil rapat' }}">
+                        placeholder="Cari judul atau isi artikel">
                 </div>
                 <div class="field">
                     <label for="posts-from">Dari tanggal</label>
@@ -52,51 +51,40 @@
                 </div>
                 <div class="posts-filter-actions">
                     <button class="btn-primary" type="submit">Cari</button>
-                    <a class="btn-outline" href="{{ $isArticle ? route('artikel.index') : route('rapat.index') }}">Reset</a>
+                    <a class="btn-outline" href="{{ route('artikel.index') }}">Reset</a>
                 </div>
             </form>
 
             @if ($items->isEmpty())
-                <p class="empty-note">Tidak ada {{ $isArticle ? 'artikel' : 'rapat' }} yang cocok dengan filter.</p>
+                <p class="empty-note">Tidak ada artikel yang cocok dengan filter.</p>
             @else
                 <div class="card-grid">
                     @foreach ($items as $item)
                         @php
-                            $id = $isArticle ? 'artikel-' . $item->id : 'rapat-' . $item->id;
-                            $title = $isArticle ? $item->judul : $item->agenda_rapat;
-                            $date = $isArticle ? $item->tanggal_post : $item->tanggal_rapat;
+                            $id = 'artikel-' . $item->id;
+                            $title = $item->judul;
+                            $date = $item->tanggal_post;
                         @endphp
                         <button type="button" class="post-card" data-dialog="{{ $id }}">
                             <div class="post-thumb">
                                 <img src="{{ $item->foto_url }}" alt="{{ $title }}" loading="lazy">
                             </div>
                             <div class="post-body">
-                                <div class="post-meta">{{ $tgl($date) }}@if (!$isArticle) &middot; {{ $item->tempat_rapat }} @endif</div>
+                                <div class="post-meta">{{ $tgl($date) }}</div>
                                 <h3>{{ $title }}</h3>
-                                @if ($isArticle)
-                                    <p>{{ \Illuminate\Support\Str::limit($item->description, 120) }}</p>
-                                @endif
+                                <p>{{ \Illuminate\Support\Str::limit($item->description, 120) }}</p>
                             </div>
                         </button>
 
                         <dialog class="dlg" id="{{ $id }}">
                             <div class="dlg-head">
-                                <span>{{ $isArticle ? 'Artikel' : 'Rapat' }}: {{ $tgl($date) }}</span>
+                                <span>Artikel: {{ $tgl($date) }}</span>
                                 <button type="button" class="dlg-close" data-close aria-label="Tutup">&times;</button>
                             </div>
                             <img class="dlg-img" src="{{ $item->foto_url }}" alt="{{ $title }}" loading="lazy">
                             <div class="dlg-body">
                                 <h3>{{ $title }}</h3>
-                                @if ($isArticle)
-                                    <p>{{ $item->description }}</p>
-                                @else
-                                    <p><b>Catatan</b>{{ $item->note }}</p>
-                                    <p><b>Waktu</b>{{ $tgl($item->tanggal_rapat) }}</p>
-                                    <p><b>Tempat</b>{{ $item->tempat_rapat }}</p>
-                                    <p><b>Hadir</b>{{ $item->jumlah_yang_hadir }} orang</p>
-                                    <p><b>Tidak Hadir</b>{{ $item->jumlah_yang_tidak_hadir }} orang</p>
-                                    <p><b>Hasil</b>{{ $item->hasil_rapat }}</p>
-                                @endif
+                                <p>{{ $item->description }}</p>
                             </div>
                         </dialog>
                     @endforeach
@@ -115,6 +103,24 @@
         });
 
         document.querySelectorAll('[data-dialog]').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+            const dlg = document.getElementById(trigger.dataset.dialog);
+            dlg?.showModal();
+        });
+    });
+    // Close dialog when clicking outside image or pressing Escape
+    document.querySelectorAll('dialog.dlg').forEach((dlg) => {
+        dlg.addEventListener('click', (e) => {
+            if (e.target === dlg) {
+                dlg.close();
+            }
+        });
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('dialog.dlg[open]').forEach((openDlg) => openDlg.close());
+        }
+    });
             trigger.addEventListener('click', () => {
                 document.getElementById(trigger.dataset.dialog)?.showModal();
             });

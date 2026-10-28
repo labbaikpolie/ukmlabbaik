@@ -14,5 +14,10 @@ class Blog extends Model
     use SoftDeletes;
 
     protected $table = 'blogs';
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'judul',
+        'tanggal_post',
+        'foto',
+        'description',
+    ];
 }

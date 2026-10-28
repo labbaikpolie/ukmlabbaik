@@ -241,8 +241,7 @@
             @include('admin.partials.sidebar')
             <!-- partial -->
             <div class="main-panel content-wrapper">
-                <div class="card mt-3 {{ request()->is('admin/rapat') ? 'admin-rapat-shell' : 'admin-generic-shell' }}">
-                    @unless (request()->is('admin/rapat'))
+                <div class="card mt-3 admin-generic-shell">
                         @php
                             $adminPageTitle = match (request()->segment(2)) {
                                 null, '' => 'Artikel',
@@ -265,8 +264,7 @@
                                 </div>
                             </div>
                         </div>
-                    @endunless
-                    @if (!request()->is('admin/rapat') && $adminStatCount !== null)
+                    @if ($adminStatCount !== null)
                         <div class="admin-generic-stats">
                             @foreach ($adminStatCards as $adminStatCard)
                                 <div class="admin-generic-stat">
@@ -278,7 +276,7 @@
                             @endforeach
                         </div>
                     @endif
-                    <div class="{{ request()->is('admin/rapat') ? '' : 'admin-generic-page' }}">
+                    <div class="admin-generic-page">
                         @yield('content')
                     </div>
                 </div>

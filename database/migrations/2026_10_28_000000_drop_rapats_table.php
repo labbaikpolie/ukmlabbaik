@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('rapats', function (Blueprint $table) {
-            $table->string('foto')->after('note');
-        });
+        Schema::dropIfExists('rapats');
     }
 
     /**
      * Reverse the migrations.
+     *
+     * Data rapat tidak dikembalikan (down kosong sengaja).
      */
     public function down(): void
     {
-        Schema::table('rapats', function (Blueprint $table) {
-            $table->dropColumn('foto');
-        });
+        // Data rapat tidak dikembalikan.
     }
 };

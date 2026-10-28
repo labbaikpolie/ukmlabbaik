@@ -49,13 +49,6 @@ trait HandlesPhotoUpload
             'judul' => 'judul artikel',
             'tanggal_post' => 'tanggal artikel',
             'description' => 'deskripsi',
-            'agenda_rapat' => 'agenda rapat',
-            'tanggal_rapat' => 'tanggal rapat',
-            'tempat_rapat' => 'tempat rapat',
-            'jumlah_yang_hadir' => 'jumlah yang hadir',
-            'jumlah_yang_tidak_hadir' => 'jumlah yang tidak hadir',
-            'hasil_rapat' => 'hasil rapat',
-            'note' => 'catatan',
         ];
 
         return $request->validate(

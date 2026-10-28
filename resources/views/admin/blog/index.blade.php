@@ -87,7 +87,7 @@
 <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ $item->id }}"
                         aria-hidden="true" data-bs-backdrop="static">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
+                            <div class="modal-content admin-form-modal">
                                 <div class="modal-header">
                                     <h1 class="modal-title fs-5" id="exampleModalLabel{{ $item->id }}">Edit Artikel</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
