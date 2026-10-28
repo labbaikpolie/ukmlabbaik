@@ -14,5 +14,13 @@ class MinatBakat extends Model
     use SoftDeletes;
 
     protected $table = 'minatbakats';
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'nama',
+        'tanggal_lahir',
+        'departement',
+        'foto',
+        'moto',
+        'angkatan',
+        'prodi',
+    ];
 }

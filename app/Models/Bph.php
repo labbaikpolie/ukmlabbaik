@@ -13,5 +13,13 @@ class Bph extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'nama',
+        'tanggal_lahir',
+        'jabatan',
+        'foto',
+        'moto',
+        'angkatan',
+        'prodi',
+    ];
 }

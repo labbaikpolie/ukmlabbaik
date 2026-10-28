@@ -7,7 +7,6 @@ use App\Http\Controllers\PsdmController;
 use App\Http\Controllers\SyiarController;
 use App\Http\Controllers\KominfoController;
 use App\Http\Controllers\admin\blogController;
-use App\Http\Controllers\admin\rapatController;
 use App\Http\Controllers\KemuslimahanController;
 use App\Http\Controllers\BphController;
 use App\Http\Controllers\LandingPageController;
@@ -26,9 +25,8 @@ use App\Http\Controllers\MinatBakatController;
 */
 
 Route::get('/',  [LandingPageController::class, 'index']);
-Route::post('/contact', [ContactController::class, 'kirim'])->name('contact.send');
+Route::post('/contact', [ContactController::class, 'kirim'])->name('contact.send')->middleware('throttle:5,1');
 Route::get('/artikel', [LandingPageController::class, 'artikel'])->name('artikel.index');
-Route::get('/rapat', [LandingPageController::class, 'rapat'])->name('rapat.index');
 Route::get('/detail-anggota',  [LandingPageController::class, 'detail_anggota']);
 
 // Route::get('/cek', [LandingPageController::class, 'index']);
@@ -38,12 +36,6 @@ Route::prefix('admin')->middleware(['auth', \App\Http\Middleware\AdminNoCacheHea
     Route::post('/saveBlog', [blogController::class, 'store']);
     Route::put('/blog/{id}', [blogController::class, 'update']);
     Route::delete('/blog/{id}', [blogController::class, 'destroy']);
-
-    // rapat
-    Route::get('/rapat', [rapatController::class, 'index']);
-    Route::post('/saveRapat', [rapatController::class, 'store']);
-    Route::put('/rapat/{id}', [rapatController::class, 'update']);
-    Route::delete('/rapat/{id}', [rapatController::class, 'destroy']);
 
     // departement
     // kominfo

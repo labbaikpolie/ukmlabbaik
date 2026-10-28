@@ -8,7 +8,6 @@ use App\Models\Kemuslimahan;
 use App\Models\Kominfo;
 use App\Models\kwu;
 use App\Models\psdm;
-use App\Models\Rapat;
 use App\Models\Syiar;
 use App\Models\MinatBakat;
 use Illuminate\Http\Request;
@@ -51,42 +50,7 @@ class LandingPageController extends Controller
             ->withQueryString();
 
         return view('userGuest.posts.index', [
-            'type' => 'artikel',
             'items' => $artikel,
-            'search' => $search,
-            'dateFrom' => $filters['from'] ?? '',
-            'dateTo' => $filters['to'] ?? '',
-        ]);
-    }
-
-    public function rapat(Request $request)
-    {
-        $filters = $request->validate([
-            'q' => ['nullable', 'string', 'max:100'],
-            'from' => ['nullable', 'date'],
-            'to' => ['nullable', 'date', 'after_or_equal:from'],
-        ]);
-
-        $search = trim($filters['q'] ?? '');
-        $rapats = Rapat::query()
-            ->when($search !== '', function ($query) use ($search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('agenda_rapat', 'like', "%{$search}%")
-                        ->orWhere('tempat_rapat', 'like', "%{$search}%")
-                        ->orWhere('note', 'like', "%{$search}%")
-                        ->orWhere('hasil_rapat', 'like', "%{$search}%");
-                });
-            })
-            ->when(!empty($filters['from']), fn ($query) => $query->whereDate('tanggal_rapat', '>=', $filters['from']))
-            ->when(!empty($filters['to']), fn ($query) => $query->whereDate('tanggal_rapat', '<=', $filters['to']))
-            ->orderByDesc('tanggal_rapat')
-            ->orderByDesc('id')
-            ->paginate(9)
-            ->withQueryString();
-
-        return view('userGuest.posts.index', [
-            'type' => 'rapat',
-            'items' => $rapats,
             'search' => $search,
             'dateFrom' => $filters['from'] ?? '',
             'dateTo' => $filters['to'] ?? '',

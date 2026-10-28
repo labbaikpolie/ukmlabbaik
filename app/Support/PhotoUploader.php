@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -11,6 +12,12 @@ class PhotoUploader
 {
     public static function store(UploadedFile $file, string $folder, int $maxSide = 1200): string
     {
+        // Validasi MIME type secara ketat — hanya izinkan gambar yang benar-benar aman
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($file->getMimeType(), $allowedMimes, true)) {
+            throw new RuntimeException('Tipe file tidak diizinkan. Hanya JPG, JPEG, PNG, dan WEBP.');
+        }
+
         $img = self::load($file->getRealPath(), $file->getMimeType());
 
         if (!$img) {
@@ -37,6 +44,7 @@ class PhotoUploader
 
     public static function reorientExisting(string $relativePath, bool $dryRun = false, int $maxSide = 1600): string
     {
+        /** @var FilesystemAdapter $disk */
         $disk = Storage::disk('public');
 
         if (!$disk->exists($relativePath)) {
@@ -127,7 +135,10 @@ class PhotoUploader
         return $img;
     }
 
-    private static function encode($img, int $maxSide): string
+    /**
+     * @param \GdImage $img
+     */
+    private static function encode(\GdImage $img, int $maxSide): string
     {
         $width = imagesx($img);
         $height = imagesy($img);
@@ -151,7 +162,10 @@ class PhotoUploader
         return $contents;
     }
 
-    private static function rotate($img, int $degrees)
+    /**
+     * @param \GdImage $img
+     */
+    private static function rotate(\GdImage $img, int $degrees)
     {
         $rotated = imagerotate($img, $degrees, 0);
 
@@ -164,7 +178,10 @@ class PhotoUploader
         return $rotated;
     }
 
-    private static function flip($img, int $mode): void
+    /**
+     * @param \GdImage $img
+     */
+    private static function flip(\GdImage $img, int $mode): void
     {
         imageflip($img, $mode);
     }

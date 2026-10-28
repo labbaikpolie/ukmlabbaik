@@ -7,12 +7,6 @@
                 <i class="mdi mdi-file-document-outline menu-icon"></i>
             </a>
         </li>
-        <li class="nav-item {{ request()->is('admin/rapat') ? 'active' : '' }}">
-            <a class="nav-link {{ request()->is('admin/rapat') ? 'active' : '' }}" href="/admin/rapat">
-                <span class="menu-title">Rapat</span>
-                <i class="mdi mdi-account-multiple-outline menu-icon"></i>
-            </a>
-        </li>
         <li class="nav-item {{ request()->is('admin/bph') ? 'active' : '' }}">
             <a class="nav-link {{ request()->is('admin/bph') ? 'active' : '' }}" href="/admin/bph">
                 <span class="menu-title">BPH</span>

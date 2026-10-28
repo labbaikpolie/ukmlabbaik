@@ -9,7 +9,6 @@ use App\Models\Kominfo;
 use App\Models\kwu;
 use App\Models\MinatBakat;
 use App\Models\psdm;
-use App\Models\Rapat;
 use App\Models\Syiar;
 use App\Support\PhotoUploader;
 use Illuminate\Console\Command;
@@ -31,7 +30,6 @@ class FixPhotoOrientation extends Command
             kwu::class,
             MinatBakat::class,
             Blog::class,
-            Rapat::class,
         ];
         $records = collect();
 
